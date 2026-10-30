@@ -13,7 +13,9 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:unit": "vitest",
-		"test": "npm run test:unit -- --run"
+		"test": "npm run test:unit -- --run",
+		"ci": "run-s build lint check test",
+		"clean": "rimraf .svelte-kit build"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
@@ -25,8 +27,10 @@
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.19.0",
 		"globals": "^17.6.0",
+		"npm-run-all2": "^9.0.4",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.1.0",
+		"rimraf": "^6.1.3",
 		"svelte": "^5.57.1",
 		"svelte-check": "^4.6.0",
 		"typescript": "^6.0.3",
