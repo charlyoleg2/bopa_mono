@@ -37,7 +37,6 @@ jobs:
                   BASE_PATH: ${{ github.event.repository.name }}
               run: |
                   npm run ci
-                  npm -w bopa-ui run github-pages-fix
 
             - name: Deploy to GitHub pages
               uses: crazy-max/ghaction-github-pages@v5
