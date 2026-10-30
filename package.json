@@ -1,0 +1,47 @@
+{
+	"name": "bopa_mono",
+	"version": "1.0.0",
+	"description": "The mono-repo for the boilerplate creator bopa",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/charlyoleg2/bopa_mono.git"
+	},
+	"homepage": "https://charlyoleg2.github.io/bopa_mono/",
+	"author": "charlyoleg2",
+	"license": "ISC",
+	"keywords": [
+		"boilerplate",
+		"ref-repo",
+		"ui"
+	],
+	"type": "module",
+	"workspaces": [
+		"pkg/*"
+	],
+	"scripts": {
+		"catalui:dev": "npm -w catalui run dev",
+		"catalui:ci": "npm -w catalui run ci",
+		"catalui:clean": "npm -w catalui run clean",
+		"catalui:preview": "npm -w catalui run preview",
+		"catalui:version": "npm -w catalui version patch",
+		"catal-uis:ci": "npm -w catal-uis run ci",
+		"catal-uis:copy_public": "npm -w catal-uis run copy_public",
+		"catal-uis:run": "npm -w catal-uis run run",
+		"catal-uis:clean": "npm -w catal-uis run clean",
+		"catal-uis:version": "npm -w catal-uis version patch",
+		"ci": "echo 'lala lili'",
+		"ci2": "run-s catalui:ci catal-uis:ci",
+		"clean-root": "rimraf tmp output output2 build",
+		"clean": "run-s clean-root catalui:clean catal-uis:clean",
+		"preview": "run-p catalui:preview",
+		"run-uis": "run-s catal-uis:run",
+		"versions": "run-s catalui:version catal-uis:version",
+		"ls-workspaces": "npm -ws exec -c pwd",
+		"ls-pkg": "ls -la pkg"
+	},
+	"devDependencies": {
+		"npm-run-all2": "^9.0.4",
+		"rimraf": "^6.1.3"
+	}
+}
