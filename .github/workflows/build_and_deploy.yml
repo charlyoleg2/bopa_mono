@@ -37,12 +37,18 @@ jobs:
                   BASE_PATH: ${{ github.event.repository.name }}
               run: |
                   npm run ci
-                  npm -w catalui run github-pages-fix
+                  npm -w bopa-ui run github-pages-fix
 
             - name: Deploy to GitHub pages
               uses: crazy-max/ghaction-github-pages@v5
               with:
                   target_branch: gh-pages
-                  build_dir: pkg/catalui/dist
+                  build_dir: pkg/bopa-ui/build
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Publish
+              if: github.ref_type == 'tag'
+              run: |
+                  npm run ci  # rebuild without env BASE_PATH
+                  npm run gh-publish
