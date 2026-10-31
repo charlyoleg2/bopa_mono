@@ -1,0 +1,94 @@
+{
+	"name": "bopac",
+	"description": "cli with web-UI to generate a boilerplate",
+	"version": "1.0.0",
+	"private": false,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/charlyoleg2/bopa_mono.git"
+	},
+	"homepage": "https://charlyoleg2.github.io/bopa_mono/",
+	"author": "charlyoleg2",
+	"license": "ISC",
+	"keywords": [
+		"boilerplate",
+		"cli",
+		"ui"
+	],
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/bopac.d.ts",
+			"default": "./dist/bopac.js"
+		}
+	},
+	"bin": {
+		"bopac": "dist/bopac.js"
+	},
+	"files": [
+		"dist/",
+		"!dist/**/*.d.ts",
+		"!dist/**/*.map",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
+	],
+	"engines": {
+		"node": ">=24.0.0"
+	},
+	"tsdown": {
+		"entry": [
+			"src/bopac.ts"
+		],
+		"format": "esm",
+		"target": "esnext",
+		"fixedExtension": false,
+		"splitting": false,
+		"dts": false,
+		"sourcemap": false,
+		"clean": true
+	},
+	"prettier": {
+		"useTabs": true,
+		"singleQuote": true,
+		"trailingComma": "none",
+		"printWidth": 100,
+		"plugins": [],
+		"overrides": []
+	},
+	"scripts": {
+		"dev": "tsdown --watch",
+		"build": "tsdown",
+		"check": "tsc --noEmit",
+		"pretty": "prettier --check .",
+		"format": "prettier --write .",
+		"lint": "eslint .",
+		"test:unit": "vitest",
+		"test:unit:once": "vitest --run",
+		"clean_public": "rimraf dist/public",
+		"copy_ui": "cpy ../bopa-ui/build dist/public",
+		"checkCopy": "ls -l dist/public/index.html",
+		"copy_public": "run-s clean_public copy_ui checkCopy",
+		"ci": "run-s check build pretty lint test:unit:once copy_public",
+		"run": "node dist/bopac.js",
+		"run-help": "node dist/bopac.js --help",
+		"clean": "rimraf node_modules build dist tmp"
+	},
+	"dependencies": {
+		"feli": "^1.0.21"
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@types/eslint__js": "^8.42.3",
+		"@types/node": "^26.6.6",
+		"cpy-cli": "^7.0.0",
+		"eslint": "^10.14.0",
+		"eslint-config-prettier": "^10.1.8",
+		"npm-run-all2": "^9.0.4",
+		"prettier": "^3.9.10",
+		"rimraf": "^6.1.3",
+		"tsdown": "^0.23.4",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.72.1",
+		"vitest": "^5.0.5"
+	}
+}
