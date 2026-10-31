@@ -7,9 +7,9 @@ Presentation
 
 *Bopa\_mono* is the top-monorepo of the CLI *bopac* and its web-UI *bopa-ui*.
 
-This monorepo contains the following *javascript* package:
+This monorepo contains the following *javascript* packages:
 
-1. bopa-recipe: a list of recipes of boilerplate
+1. bopa-recipe: a list of recipes of boilerplates
 2. bopa-ui: the web-UI of BoPa
 3. bopac: the CLI, that spins *bopa-ui* and write the boilerplate
 
