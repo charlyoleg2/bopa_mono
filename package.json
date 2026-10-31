@@ -30,6 +30,7 @@
 		"bopac:run": "npm -w bopac run run",
 		"bopac:clean": "npm -w bopac run clean",
 		"bopac:version": "npm -w bopac version patch",
+		"bopac:publish": "npm -w bopac publish --provenance",
 		"ci": "run-s bopa-ui:ci bopac:ci",
 		"ci2": "run-s bopa-ui:ci",
 		"clean-root": "rimraf tmp output output2 build",
@@ -37,6 +38,7 @@
 		"preview": "run-p bopa-ui:preview",
 		"run": "run-s bopac:run",
 		"versions": "run-s bopa-ui:version bopac:version",
+		"gh-publish": "run-s bopac:publish",
 		"ls-workspaces": "npm -ws exec -c pwd",
 		"ls-pkg": "ls -la pkg"
 	},
