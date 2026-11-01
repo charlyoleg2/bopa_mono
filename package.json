@@ -20,6 +20,9 @@
 		"pkg/*"
 	],
 	"scripts": {
+		"bopa-lib:ci": "npm -w bopa-lib run ci",
+		"bopa-lib:clean": "npm -w bopa-lib run clean",
+		"bopa-lib:version": "npm -w bopa-lib version patch",
 		"bopa-ui:dev": "npm -w bopa-ui run dev",
 		"bopa-ui:ci": "npm -w bopa-ui run ci",
 		"bopa-ui:clean": "npm -w bopa-ui run clean",
@@ -31,13 +34,13 @@
 		"bopac:clean": "npm -w bopac run clean",
 		"bopac:version": "npm -w bopac version patch",
 		"bopac:publish": "npm -w bopac publish --provenance",
-		"ci": "run-s bopa-ui:ci bopac:ci",
+		"ci": "run-s bopa-lib:ci bopa-ui:ci bopac:ci",
 		"ci2": "run-s bopa-ui:ci",
 		"clean-root": "rimraf tmp output output2 build",
-		"clean": "run-s clean-root bopa-ui:clean bopac:clean",
+		"clean": "run-s clean-root bopa-lib:clean bopa-ui:clean bopac:clean",
 		"preview": "run-p bopa-ui:preview",
 		"run": "run-s bopac:run",
-		"versions": "run-s bopa-ui:version bopac:version",
+		"versions": "run-s bopa-lib:version bopa-ui:version bopac:version",
 		"gh-publish": "run-s bopac:publish",
 		"ls-workspaces": "npm -ws exec -c pwd",
 		"ls-pkg": "ls -la pkg"

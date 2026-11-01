@@ -47,7 +47,7 @@ Or preselect the boilerplate recipe
 
 ```bash
 npx bopac@latest --help
-npx bopac@latest --url=https://github.com/charlyoleg2/bopa_mono/pkg/bopa-recipe/recipe/parame99_mono.json
+npx bopac@latest --url=https://github.com/charlyoleg2/bopa_mono/pkg/bopa-lib/recipe/parame99_mono.json
 npx bopac@latest --file=path/to/parame99_mono.json
 npx bopac@latest --select=parame99_mono.json
 ```
