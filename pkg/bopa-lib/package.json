@@ -61,11 +61,7 @@
 		"lint": "eslint .",
 		"test:unit": "vitest",
 		"test:unit:once": "vitest --run",
-		"clean_public": "rimraf dist/public",
-		"copy_ui": "cpy ../bopa-ui/build/* dist/public/",
-		"checkCopy": "ls -l dist/public/index.html",
-		"copy_public": "run-s clean_public copy_ui checkCopy",
-		"ci": "run-s check build pretty lint test:unit:once copy_public",
+		"ci": "run-s check build pretty lint test:unit:once",
 		"clean": "rimraf node_modules build dist tmp"
 	},
 	"devDependencies": {
