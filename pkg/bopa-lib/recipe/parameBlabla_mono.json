@@ -1,14 +1,26 @@
 {
 	"params": [
-		{ "name": "repo-name", "default": "parameBlabla_mono", "description": "name of the repository" },
-		{ "name": "design-package-name", "default": "desiBlabla", "description": "name of the Parametrix design package" },
-		{ "name": "design-name", "default": "myBox", "description": "name of one Parametrix design example" }
+		{
+			"name": "repo-name",
+			"default": "parameBlabla_mono",
+			"description": "name of the repository"
+		},
+		{
+			"name": "design-package-name",
+			"default": "desiBlabla",
+			"description": "name of the Parametrix design package"
+		},
+		{
+			"name": "design-name",
+			"default": "myBox",
+			"description": "name of one Parametrix design example"
+		}
 	],
 	"def": {
 		"BASE1": "https://github.com/charlyoleg2/ref_parameBlabla_mono/blob/main/"
 	},
 	"files": {
-		"BASE1" : [
+		"BASE1": [
 			".editorconfig",
 			".gitignore",
 			".npmrc",
