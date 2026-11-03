@@ -16,7 +16,7 @@
 			"description": "name of one Parametrix design example"
 		}
 	],
-	"def": {
+	"defs": {
 		"BASE1": "https://github.com/charlyoleg2/ref_parameBlabla_mono/blob/main/"
 	},
 	"files": {
