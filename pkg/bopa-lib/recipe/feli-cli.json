@@ -7,7 +7,7 @@
 			"renamePath": "ref_feli_mono",
 			"renameContent": "ref_feli_mono",
 			"renameLastMessage": "ref_feli_mono",
-			"topDir": "true"
+			"topDir": "ref_feli_mono"
 		},
 		{
 			"name": "CLI-script",
@@ -16,10 +16,11 @@
 			"renamePath": "ref-uis",
 			"renameContent": "ref-uis",
 			"renameLastMessage": "ref-uis",
-			"topDir": "false"
+			"topDir": "ref-uis"
 		}
 	],
 	"topDir": {
+		"name": "ref_feli_mono",
 		"createTopDir": "true",
 		"checkParentDir": "true"
 	},

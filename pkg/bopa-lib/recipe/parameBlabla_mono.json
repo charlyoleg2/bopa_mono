@@ -7,7 +7,7 @@
 			"renamePath": "ref_parameBlabla_mono",
 			"renameContent": "ref_parameBlabla_mono",
 			"renameLastMessage": "ref_parameBlabla_mono",
-			"topDir": "true"
+			"topDir": "ref_parameBlabla_mono"
 		},
 		{
 			"name": "design-package-name",
@@ -16,7 +16,7 @@
 			"renamePath": "desiBlabla",
 			"renameContent": "desiBlabla",
 			"renameLastMessage": "desiBlabla",
-			"topDir": "false"
+			"topDir": "desiBlabla"
 		},
 		{
 			"name": "design-name",
@@ -25,10 +25,11 @@
 			"renamePath": "myBox",
 			"renameContent": "myBox",
 			"renameLastMessage": "myBox",
-			"topDir": "false"
+			"topDir": "myBox"
 		}
 	],
 	"topDir": {
+		"name": "ref_parameBlabla_mono",
 		"createTopDir": "true",
 		"checkParentDir": "true"
 	},
