@@ -4,28 +4,28 @@
 			"name": "repo-name",
 			"default": "parameBlabla_mono",
 			"description": "name of the repository",
-			"renamePath": "ref_parameBlabla_mono",
-			"renameContent": "ref_parameBlabla_mono",
-			"renameLastMessage": "ref_parameBlabla_mono",
-			"topDir": "ref_parameBlabla_mono"
+			"renameFilePath": "ref_parameBlabla_mono",
+			"renameFContent": "ref_parameBlabla_mono",
+			"renameLastMsgs": "ref_parameBlabla_mono",
+			"renameLeTopDir": "ref_parameBlabla_mono"
 		},
 		{
 			"name": "design-package-name",
 			"default": "desiBlabla",
 			"description": "name of the Parametrix design package",
-			"renamePath": "desiBlabla",
-			"renameContent": "desiBlabla",
-			"renameLastMessage": "desiBlabla",
-			"topDir": "desiBlabla"
+			"renameFilePath": "desiBlabla",
+			"renameFContent": "desiBlabla",
+			"renameLastMsgs": "desiBlabla",
+			"renameLeTopDir": "desiBlabla"
 		},
 		{
 			"name": "design-name",
 			"default": "myBox",
 			"description": "name of one Parametrix design example",
-			"renamePath": "myBox",
-			"renameContent": "myBox",
-			"renameLastMessage": "myBox",
-			"topDir": "myBox"
+			"renameFilePath": "myBox",
+			"renameFContent": "myBox",
+			"renameLastMsgs": "myBox",
+			"renameLeTopDir": "myBox"
 		}
 	],
 	"topDir": {

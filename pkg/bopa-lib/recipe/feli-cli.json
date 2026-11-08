@@ -4,19 +4,19 @@
 			"name": "package-name",
 			"default": "UIS",
 			"description": "name of the package",
-			"renamePath": "ref_feli_mono",
-			"renameContent": "ref_feli_mono",
-			"renameLastMessage": "ref_feli_mono",
-			"topDir": "ref_feli_mono"
+			"renameFilePath": "ref_feli_mono",
+			"renameFContent": "ref_feli_mono",
+			"renameLastMsgs": "ref_feli_mono",
+			"renameLeTopDir": "ref_feli_mono"
 		},
 		{
 			"name": "CLI-script",
 			"default": "ref-uis",
 			"description": "name of CLI-script",
-			"renamePath": "ref-uis",
-			"renameContent": "ref-uis",
-			"renameLastMessage": "ref-uis",
-			"topDir": "ref-uis"
+			"renameFilePath": "ref-uis",
+			"renameFContent": "ref-uis",
+			"renameLastMsgs": "ref-uis",
+			"renameLeTopDir": "ref-uis"
 		}
 	],
 	"topDir": {
