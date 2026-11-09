@@ -1,6 +1,6 @@
 // feli-cli.ts
 
-import type { tParams, tParamVal, tBopa } from '../src/bopat.ts';
+import type { tParams, tParamVal, tBopa } from '../src/recipeType.ts';
 
 // params
 const params: tParams[] = [

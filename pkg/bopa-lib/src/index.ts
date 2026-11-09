@@ -6,3 +6,4 @@ function abc(aStr: string): string {
 }
 
 export { abc };
+export * from './recipeZod.ts';

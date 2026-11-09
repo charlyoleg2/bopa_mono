@@ -1,4 +1,4 @@
-// bopat.ts
+// recipeType.ts
 
 interface tParams {
 	name: string;

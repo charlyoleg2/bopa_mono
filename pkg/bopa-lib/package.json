@@ -62,6 +62,8 @@
 		"test:unit": "vitest",
 		"test:unit:once": "vitest --run",
 		"ci": "run-s check build pretty lint test:unit:once",
+		"run1": "tsx scr/check-json-recipe.ts",
+		"runAll": "run-s run1",
 		"clean": "rimraf node_modules build dist tmp"
 	},
 	"devDependencies": {
@@ -81,6 +83,7 @@
 		"vitest": "^5.1.0"
 	},
 	"dependencies": {
+		"glob": "^14.0.4",
 		"zod": "^4.6.7"
 	}
 }

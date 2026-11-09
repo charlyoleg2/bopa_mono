@@ -1,8 +1,6 @@
-// parse-recipe.ts
+// recipeZod.ts
 
 import * as z from 'zod';
-import fs from 'node:fs/promises';
-//import process from 'node:process';
 
 const zRecipe = z.strictObject({
 	params: z.array(
@@ -31,19 +29,4 @@ const zRecipe = z.strictObject({
 	lastMessages: z.array(z.string())
 });
 
-//const jsonSchema = JSON.stringify(z.toJSONSchema(zRecipe), null, 2);
-//await fs.writeFile('recipeJsonSchema.json', jsonSchema);
-
-const fPath = './recipe/parameBlabla_mono.json';
-const jsonString = await fs.readFile(fPath, 'utf8');
-
-try {
-	//console.log(jsonString);
-	const jsonData = JSON.parse(jsonString);
-	//console.log(jsonData);
-	zRecipe.parse(jsonData);
-	console.log(`file ${fPath} parse successfully!`);
-} catch (err) {
-	console.log(err);
-	//process.exit(1);
-}
+export { zRecipe };
