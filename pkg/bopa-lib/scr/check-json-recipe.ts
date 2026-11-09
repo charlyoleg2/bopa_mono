@@ -8,9 +8,8 @@ import fs from 'node:fs/promises';
 //const jsonSchema = JSON.stringify(z.toJSONSchema(zRecipe), null, 2);
 //await fs.writeFile('recipeJsonSchema.json', jsonSchema);
 
-
 async function checkOne(iPath: string) {
-	let logMsg = `check ${iPath} :`
+	let logMsg = `check ${iPath} :`;
 	const jsonString = await fs.readFile(iPath, 'utf8');
 	try {
 		//console.log(jsonString);
