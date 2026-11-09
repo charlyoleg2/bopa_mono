@@ -2,9 +2,10 @@
 
 import * as z from "zod";
 import fs from 'node:fs/promises';
+//import process from 'node:process';
 
-const zRecipe = z.object({
-	params: z.array(z.object({
+const zRecipe = z.strictObject({
+	params: z.array(z.strictObject({
 		name: z.string(),
 		default: z.string(),
 		description: z.string(),
@@ -13,12 +14,12 @@ const zRecipe = z.object({
 		renameLastMsgs: z.string(),
 		renameLeTopDir: z.string()
 	})),
-	topDir: z.object({
+	topDir: z.strictObject({
 		name: z.string(),
 		createTopDir: z.boolean(),
 		checkParentDir: z.boolean()
 	}),
-	files: z.array(z.object({
+	files: z.array(z.strictObject({
 		url: z.url(),
 		path: z.array(z.string())
 	})),
@@ -37,7 +38,8 @@ try {
 	const jsonData = JSON.parse(jsonString);
 	//console.log(jsonData);
 	zRecipe.parse(jsonData);
+	console.log(`file ${fPath} parse successfully!`);
 } catch(err){
 	console.log(err);
+	//process.exit(1);
 }
-console.log(`file ${fPath} parse successfully!`);
