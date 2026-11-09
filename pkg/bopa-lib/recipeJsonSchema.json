@@ -1,105 +1,92 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "params": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "default": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "renameFilePath": {
-            "type": "string"
-          },
-          "renameFContent": {
-            "type": "string"
-          },
-          "renameLastMsgs": {
-            "type": "string"
-          },
-          "renameLeTopDir": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "default",
-          "description",
-          "renameFilePath",
-          "renameFContent",
-          "renameLastMsgs",
-          "renameLeTopDir"
-        ],
-        "additionalProperties": false
-      }
-    },
-    "topDir": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "createTopDir": {
-          "type": "boolean"
-        },
-        "checkParentDir": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "name",
-        "createTopDir",
-        "checkParentDir"
-      ],
-      "additionalProperties": false
-    },
-    "files": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "path": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "url",
-          "path"
-        ],
-        "additionalProperties": false
-      }
-    },
-    "mkdir": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "lastMessages": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    }
-  },
-  "required": [
-    "params",
-    "topDir",
-    "files",
-    "mkdir",
-    "lastMessages"
-  ],
-  "additionalProperties": false
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"type": "object",
+	"properties": {
+		"params": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"default": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"renameFilePath": {
+						"type": "string"
+					},
+					"renameFContent": {
+						"type": "string"
+					},
+					"renameLastMsgs": {
+						"type": "string"
+					},
+					"renameLeTopDir": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"default",
+					"description",
+					"renameFilePath",
+					"renameFContent",
+					"renameLastMsgs",
+					"renameLeTopDir"
+				],
+				"additionalProperties": false
+			}
+		},
+		"topDir": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"createTopDir": {
+					"type": "boolean"
+				},
+				"checkParentDir": {
+					"type": "boolean"
+				}
+			},
+			"required": ["name", "createTopDir", "checkParentDir"],
+			"additionalProperties": false
+		},
+		"files": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"url": {
+						"type": "string",
+						"format": "uri"
+					},
+					"path": {
+						"type": "string"
+					}
+				},
+				"required": ["url", "path"],
+				"additionalProperties": false
+			}
+		},
+		"mkdir": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		},
+		"lastMessages": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}
+	},
+	"required": ["params", "topDir", "files", "mkdir", "lastMessages"],
+	"additionalProperties": false
 }
