@@ -20,12 +20,24 @@ const zRecipe = z.object({
 	}),
 	files: z.array(z.object({
 		url: z.url(),
-		path: z.string()
+		path: z.array(z.string())
 	})),
 	mkdir: z.array(z.string()),
 	lastMessages: z.array(z.string())
 });
 
-const jsonSchema = JSON.stringify(z.toJSONSchema(zRecipe), null, 2);
-await fs.writeFile('recipeJsonSchema.json', jsonSchema);
+//const jsonSchema = JSON.stringify(z.toJSONSchema(zRecipe), null, 2);
+//await fs.writeFile('recipeJsonSchema.json', jsonSchema);
 
+const fPath = './recipe/parameBlabla_mono.json';
+const jsonString = await fs.readFile(fPath, 'utf8');
+
+try {
+	//console.log(jsonString);
+	const jsonData = JSON.parse(jsonString);
+	//console.log(jsonData);
+	zRecipe.parse(jsonData);
+} catch(err){
+	console.log(err);
+}
+console.log(`file ${fPath} parse successfully!`);

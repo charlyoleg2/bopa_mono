@@ -30,8 +30,8 @@
 	],
 	"topDir": {
 		"name": "ref_parameBlabla_mono",
-		"createTopDir": "true",
-		"checkParentDir": "true"
+		"createTopDir": true,
+		"checkParentDir": true
 	},
 	"files": [
 		{

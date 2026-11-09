@@ -21,8 +21,8 @@
 	],
 	"topDir": {
 		"name": "ref_feli_mono",
-		"createTopDir": "true",
-		"checkParentDir": "true"
+		"createTopDir": true,
+		"checkParentDir": true
 	},
 	"files": [
 		{
