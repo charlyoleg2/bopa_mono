@@ -1,0 +1,1 @@
+import{A as e,h as t,p as n}from"../chunks/D9wmIjYr.js";var r=t(`<h1>Welcome to BoPa-UI</h1> <p>lala</p>`,1);function i(t){var i=r();e(2),n(t,i)}export{i as component};
