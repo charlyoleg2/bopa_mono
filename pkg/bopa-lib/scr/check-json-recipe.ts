@@ -1,28 +1,22 @@
 // check-recipes.ts
 
-import { zRecipe } from '../src/index.ts';
+import { readRecipe } from '../src/index.ts';
 import { glob } from 'glob';
 import fs from 'node:fs/promises';
+import path from 'node:path';
 //import process from 'node:process';
 
 //const jsonSchema = JSON.stringify(z.toJSONSchema(zRecipe), null, 2);
 //await fs.writeFile('recipeJsonSchema.json', jsonSchema);
 
 async function checkOne(iPath: string) {
-	let logMsg = `check ${iPath} :`;
-	const jsonString = await fs.readFile(iPath, 'utf8');
-	try {
-		//console.log(jsonString);
-		const jsonData = JSON.parse(jsonString);
-		//console.log(jsonData);
-		logMsg += ' json ok :';
-		zRecipe.parse(jsonData);
-		logMsg += ' schema ok';
-		console.log(logMsg);
-	} catch (err) {
-		console.log('ERR024: ' + logMsg);
-		console.log(err);
-		//process.exit(1);
+	const fName = path.basename(iPath);
+	const fText = await fs.readFile(iPath, 'utf8');
+	const res = readRecipe(fName, fText);
+	if (res.ok) {
+		console.log(res.msg);
+	} else {
+		console.error(res.msg);
 	}
 }
 
