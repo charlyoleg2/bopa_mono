@@ -19,7 +19,7 @@ async function runOne(iPath: string) {
 	if (res.ok) {
 		//console.log(res.msg);
 		const zFile = await makeZip(res.recipe);
-		const fZipName = `${dirOut}/${zFile.fName}`;
+		const fZipName = `${dirOut}/${zFile.fName}.zip`;
 		// write binary file
 		const fArrayBuffer = await zFile.fBlob.arrayBuffer();
 		const fBuffer = Buffer.from(fArrayBuffer);
