@@ -1,6 +1,6 @@
 // run-json-recipes.ts
 
-import { readRecipe, makeZip } from '../src/index.ts';
+import { readRecipe, makeZip, genParamVal } from '../src/index.ts';
 import { glob } from 'glob';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -18,13 +18,14 @@ async function runOne(idx: number, iPath: string) {
 	const res = readRecipe(fName, fText);
 	if (res.ok) {
 		//console.log(res.msg);
-		const zFile = await makeZip(res.recipe);
+		const zFile = await makeZip(res.recipe, genParamVal(res.recipe));
 		const fZipName = `${dirOut}/${zFile.fName}.zip`;
 		// write binary file
 		const fArrayBuffer = await zFile.fBlob.arrayBuffer();
 		const fBuffer = Buffer.from(fArrayBuffer);
 		await fs.writeFile(fZipName, fBuffer);
 		console.log(`${idx}- Write file ${fZipName}`);
+		console.log(`  topDir: ${zFile.fName} [cnt: ${zFile.fNameCnt}]`);
 	} else {
 		console.error(res.msg);
 	}
@@ -39,7 +40,7 @@ async function runAll() {
 }
 
 console.log('run-json-recipe.ts says Hello!');
-await fs.rm(dirOut, { recursive: true });
+await fs.rm(dirOut, { recursive: true, force: true });
 await fs.mkdir(dirOut, { recursive: true });
 if (process.argv.length > 3) {
 	console.error(`ERR044: unexpected number of arguments: ${process.argv.length}`);

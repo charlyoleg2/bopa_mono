@@ -74,5 +74,50 @@ function readRecipe(fName: string, fText: string): tRecipeReadRes {
 	return rRes;
 }
 
-export type { tRecipe, tRecipeReadRes };
-export { zRecipe, cRecipe0, readRecipe };
+type tKeyVal = Record<string, string>;
+
+function genParamVal(iRecipe: tRecipe): tKeyVal {
+	const rParamVal: tKeyVal = {};
+	for (const iParam of iRecipe.params) {
+		const pKey = iParam.name;
+		const pVal = iParam.default;
+		rParamVal[pKey] = pVal;
+	}
+	return rParamVal;
+}
+
+enum tReplaceMode {
+	eFilePath,
+	eFContent,
+	eLastMsgs,
+	eLeTopDir
+}
+type tReplaceKey = 'renameFilePath' | 'renameFContent' | 'renameLastMsgs' | 'renameLeTopDir';
+
+function getReplaceKey(iMode: tReplaceMode): tReplaceKey {
+	let rReplaceKey: tReplaceKey = 'renameFilePath';
+	if (iMode === tReplaceMode.eFContent) {
+		rReplaceKey = 'renameFContent';
+	} else if (iMode === tReplaceMode.eLastMsgs) {
+		rReplaceKey = 'renameLastMsgs';
+	} else if (iMode === tReplaceMode.eLeTopDir) {
+		rReplaceKey = 'renameLeTopDir';
+	}
+	return rReplaceKey;
+}
+
+function genReplaceKV(iRecipe: tRecipe, iParamVal: tKeyVal, iMode: tReplaceMode): tKeyVal {
+	const rReplaceKV: tKeyVal = {};
+	const replaceKey = getReplaceKey(iMode);
+	for (const iParam of iRecipe.params) {
+		const kk = iParam[replaceKey];
+		const vv = iParamVal[iParam.name];
+		if (!['', '.'].includes(kk) && !['', '.'].includes(vv)) {
+			rReplaceKV[kk] = vv;
+		}
+	}
+	return rReplaceKV;
+}
+
+export type { tRecipe, tRecipeReadRes, tKeyVal };
+export { tReplaceMode, zRecipe, cRecipe0, readRecipe, genParamVal, genReplaceKV };
