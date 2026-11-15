@@ -31,6 +31,14 @@ const zRecipe = z.strictObject({
 
 type tRecipe = z.infer<typeof zRecipe>;
 
+const cRecipe0: tRecipe = {
+	params: [],
+	topDir: { name: 'recipeZero', createTopDir: false, checkParentDir: true },
+	files: [],
+	mkdir: [],
+	lastMessages: []
+};
+
 interface tRecipeReadRes {
 	ok: boolean;
 	msg: string;
@@ -40,13 +48,7 @@ interface tRecipeReadRes {
 function readRecipe(fName: string, fText: string): tRecipeReadRes {
 	let rOk = false;
 	let rMsg = `check ${fName} :`;
-	let rRecipe: tRecipe = {
-		params: [],
-		topDir: { name: 'nothing', createTopDir: false, checkParentDir: true },
-		files: [],
-		mkdir: [],
-		lastMessages: []
-	};
+	let rRecipe = cRecipe0;
 	try {
 		//console.log(fText);
 		const jsonData = JSON.parse(fText);
@@ -73,4 +75,4 @@ function readRecipe(fName: string, fText: string): tRecipeReadRes {
 }
 
 export type { tRecipe, tRecipeReadRes };
-export { zRecipe, readRecipe };
+export { zRecipe, cRecipe0, readRecipe };
