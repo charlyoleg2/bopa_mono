@@ -7,4 +7,4 @@ function abc(aStr: string): string {
 
 export { abc };
 export * from './recipeZod.ts';
-export * from './makeZip.ts';
+export * from './makeBoiler.ts';

@@ -1,6 +1,6 @@
 // run-json-recipes.ts
 
-import { readRecipe, makeZip, genParamVal } from '../src/index.ts';
+import { readRecipe, makeBoiler, genParamVal } from '../src/index.ts';
 import { glob } from 'glob';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -18,14 +18,19 @@ async function runOne(idx: number, iPath: string) {
 	const res = readRecipe(fName, fText);
 	if (res.ok) {
 		//console.log(res.msg);
-		const zFile = await makeZip(res.recipe, genParamVal(res.recipe));
-		const fZipName = `${dirOut}/${zFile.fName}.zip`;
+		const boiler = await makeBoiler(res.recipe, genParamVal(res.recipe));
+		const fZipName = `${dirOut}/${boiler.topDir}.zip`;
 		// write binary file
-		const fArrayBuffer = await zFile.fBlob.arrayBuffer();
+		const fArrayBuffer = await boiler.zipBlob.arrayBuffer();
 		const fBuffer = Buffer.from(fArrayBuffer);
 		await fs.writeFile(fZipName, fBuffer);
+		// log
 		console.log(`${idx}- Write file ${fZipName}`);
-		console.log(`  topDir: ${zFile.fName} [replace-cnt: ${zFile.fNameCnt}]`);
+		console.log(`  topDir: ${boiler.topDir} [replace-cnt: ${boiler.topDirCnt}]`);
+		console.log(`  lastMessages:  [replace-cnt: ${boiler.lastMsgCnt}]`);
+		for (const iLine of boiler.lastMsg) {
+			console.log(`    ${iLine}`);
+		}
 	} else {
 		console.error(res.msg);
 	}

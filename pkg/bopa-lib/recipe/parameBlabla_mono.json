@@ -108,7 +108,7 @@
 	],
 	"mkdir": [],
 	"lastMessages": [
-		"cd parameBlabla_mono",
-		"git init && git add . && git commit -am 'initial commit of parameBlabla_mono'"
+		"cd ref_parameBlabla_mono",
+		"git init && git add . && git commit -am 'initial commit of ref_parameBlabla_mono'"
 	]
 }

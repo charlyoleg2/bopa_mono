@@ -52,8 +52,8 @@
 	],
 	"mkdir": [],
 	"lastMessages": [
-		"echo 'feli-uis created successfully'",
-		"cd UIS",
-		"git init && git add . && git commit -am 'initial commit of UIS'"
+		"echo 'ref-uis created successfully'",
+		"cd ref_feli_mono",
+		"git init && git add . && git commit -am 'initial commit of ref_feli_mono'"
 	]
 }
