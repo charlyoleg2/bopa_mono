@@ -25,7 +25,7 @@ async function runOne(idx: number, iPath: string) {
 		const fBuffer = Buffer.from(fArrayBuffer);
 		await fs.writeFile(fZipName, fBuffer);
 		console.log(`${idx}- Write file ${fZipName}`);
-		console.log(`  topDir: ${zFile.fName} [cnt: ${zFile.fNameCnt}]`);
+		console.log(`  topDir: ${zFile.fName} [replace-cnt: ${zFile.fNameCnt}]`);
 	} else {
 		console.error(res.msg);
 	}

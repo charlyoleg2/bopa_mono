@@ -13,12 +13,12 @@ interface tFile {
 function genTopDirName(iRecipe: tRecipe, iParamVal: tKeyVal): [string, number] {
 	let rTopDirName = iRecipe.topDir.name;
 	const replaceKV = genReplaceKV(iRecipe, iParamVal, tReplaceMode.eLeTopDir);
-	console.log(replaceKV);
+	//console.log(replaceKV);
 	let rCnt = 0;
 	for (const kk in replaceKV) {
 		const vv = replaceKV[kk];
 		const kkRegex = new RegExp(kk, 'g');
-		rCnt = rTopDirName.matchAll(kkRegex).reduce((cc) => cc + 1, 0);
+		rCnt += rTopDirName.matchAll(kkRegex).reduce((cc) => cc + 1, 0);
 		rTopDirName = rTopDirName.replaceAll(kkRegex, vv);
 	}
 	return [rTopDirName, rCnt];
