@@ -27,6 +27,8 @@ async function runOne(idx: number, iPath: string) {
 		// log
 		console.log(`${idx}- Write file ${fZipName}`);
 		console.log(`  topDir: ${boiler.topDir} [replace-cnt: ${boiler.topDirCnt}]`);
+		console.log(`  directory-tree:  [replace-cnt: ${boiler.pathCnt}]`);
+		console.log(boiler.dirTree);
 		console.log(`  lastMessages:  [replace-cnt: ${boiler.lastMsgCnt}]`);
 		for (const iLine of boiler.lastMsg) {
 			console.log(`    ${iLine}`);
