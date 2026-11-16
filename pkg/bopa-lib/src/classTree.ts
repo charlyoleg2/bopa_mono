@@ -25,10 +25,11 @@ class Tree {
 		// eslint-disable-next-line
 		let pTree: Tree = this;
 		for (const elem of lElem) {
+			//console.log(`dbg288: Tree name: ${pTree.name}`);
 			const p2Tree = pTree.find(elem);
 			if (p2Tree === null) {
 				const nTree = new Tree(elem);
-				this.sub.push(nTree);
+				pTree.sub.push(nTree);
 				pTree = nTree;
 			} else {
 				pTree = p2Tree;
@@ -36,10 +37,13 @@ class Tree {
 		}
 	}
 
-	txtDiag() {
+	txtDiag(iShift = 0) {
 		let rTxt = '';
 		for (const elem of this.sub) {
-			rTxt += `  + ${elem.name}\n`;
+			rTxt += `${' '.repeat(iShift)}+ ${elem.name}\n`;
+			for (const elem2 of elem.sub) {
+				rTxt += elem2.txtDiag(iShift + 2);
+			}
 		}
 		return rTxt;
 	}

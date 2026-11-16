@@ -89,9 +89,11 @@ function genLastMsg(iRecipe: tRecipe, iParamVal: tKeyVal): [string[], number] {
 function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): string {
 	const dirTree = makeTree(iTopDir);
 	for (const iLine of iFiles) {
-		//dirTree.add(path.Dirname(iLine));
-		const dirPath = iLine.replace(/\/[^/]$/, '');
-		dirTree.add(dirPath);
+		if (/\//.test(iLine)) {
+			//dirTree.add(path.Dirname(iLine));
+			const dirPath = iLine.replace(/\/[^/]$/, '');
+			dirTree.add(dirPath);
+		}
 	}
 	for (const iLine of iDirs) {
 		dirTree.add(iLine);
