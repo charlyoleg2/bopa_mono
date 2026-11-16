@@ -2,6 +2,7 @@
 
 import type { tRecipe, tKeyVal } from './recipeZod.ts';
 import { tReplaceMode, genReplaceKV } from './recipeZod.ts';
+import { makeTree } from './classTree.ts';
 import { ZipFS } from '@zip.js/zip.js';
 
 interface tBoilerPlate {
@@ -85,15 +86,24 @@ function genLastMsg(iRecipe: tRecipe, iParamVal: tKeyVal): [string[], number] {
 	return [rLastMsg, rCnt];
 }
 
-function genDirTree(iFiles: string[], iDirs: string[]): string {
-	const rDirTree = `dirTree ${iFiles.length} ${iDirs.length}`;
+function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): string {
+	const dirTree = makeTree(iTopDir);
+	for (const iLine of iFiles) {
+		//dirTree.add(path.Dirname(iLine));
+		const dirPath = iLine.replace(/\/[^/]$/, '');
+		dirTree.add(dirPath);
+	}
+	for (const iLine of iDirs) {
+		dirTree.add(iLine);
+	}
+	const rDirTree = dirTree.txtDiag();
 	return rDirTree;
 }
 
 async function makeBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): Promise<tBoilerPlate> {
 	const [topDir, topDirCnt] = genTopDirName(iRecipe, iParamVal);
-	const [lFiles, lDirs, pathCnt] = genPath(iRecipe, iParamVal);
-	const dirTree = genDirTree(lFiles, lDirs);
+	const [lFile, lDir, pathCnt] = genPath(iRecipe, iParamVal);
+	const dirTree = genDirTree(topDir, lFile, lDir);
 	const [lastMsg, lastMsgCnt] = genLastMsg(iRecipe, iParamVal);
 	const zipFs = new ZipFS();
 	zipFs.addText('hello.txt', 'Hello world!');
