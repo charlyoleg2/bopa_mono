@@ -1,8 +1,8 @@
-// classTree.ts
+// concept-tree.ts
 
-class Tree {
+class ConceptTree {
 	name = '';
-	sub: Tree[] = [];
+	sub: ConceptTree[] = [];
 
 	constructor(iName: string) {
 		if (!['', '.'].includes(iName)) {
@@ -10,7 +10,7 @@ class Tree {
 		}
 	}
 
-	find(iName: string): Tree | null {
+	find(iName: string): ConceptTree | null {
 		let rTree = null;
 		for (const elem of this.sub) {
 			if (elem.name === iName) {
@@ -23,12 +23,12 @@ class Tree {
 	add(iPath: string) {
 		const lElem = iPath.split('/');
 		// eslint-disable-next-line
-		let pTree: Tree = this;
+		let pTree: ConceptTree = this;
 		for (const elem of lElem) {
 			//console.log(`dbg288: Tree name: ${pTree.name}`);
 			const p2Tree = pTree.find(elem);
 			if (p2Tree === null) {
-				const nTree = new Tree(elem);
+				const nTree = new ConceptTree(elem);
 				pTree.sub.push(nTree);
 				pTree = nTree;
 			} else {
@@ -49,9 +49,9 @@ class Tree {
 	}
 }
 
-function makeTree(iName: string): Tree {
-	const rTree = new Tree(iName);
+function conceptTree(iName: string): ConceptTree {
+	const rTree = new ConceptTree(iName);
 	return rTree;
 }
 
-export { makeTree };
+export { conceptTree };

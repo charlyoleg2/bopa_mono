@@ -2,7 +2,7 @@
 
 import type { tRecipe, tKeyVal } from './recipeZod.ts';
 import { tReplaceMode, genReplaceKV } from './recipeZod.ts';
-import { makeTree } from './classTree.ts';
+import { conceptTree } from './concept-tree.ts';
 import { ZipFS } from '@zip.js/zip.js';
 
 interface tBoilerPlate {
@@ -87,11 +87,11 @@ function genLastMsg(iRecipe: tRecipe, iParamVal: tKeyVal): [string[], number] {
 }
 
 function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): string {
-	const dirTree = makeTree(iTopDir);
+	const dirTree = conceptTree(iTopDir);
 	for (const iLine of iFiles) {
 		if (/\//.test(iLine)) {
 			//dirTree.add(path.Dirname(iLine));
-			const dirPath = iLine.replace(/\/[^/]$/, '');
+			const dirPath = iLine.replace(/\/[^/].*$/, '');
 			dirTree.add(dirPath);
 		}
 	}
