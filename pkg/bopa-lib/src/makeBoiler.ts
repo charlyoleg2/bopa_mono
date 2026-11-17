@@ -91,7 +91,7 @@ function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): string 
 	for (const iLine of iFiles) {
 		if (/\//.test(iLine)) {
 			//dirTree.add(path.Dirname(iLine));
-			const dirPath = iLine.replace(/\/[^/].*$/, '');
+			const dirPath = iLine.replace(/\/[^/]*$/, '');
 			dirTree.add(dirPath);
 		}
 	}
