@@ -12,22 +12,25 @@ class ConceptTree {
 
 	find(iName: string): ConceptTree | null {
 		let rTree = null;
-		for (const elem of this.sub) {
-			if (elem.name === iName) {
-				rTree = elem;
+		for (const obj of this.sub) {
+			if (obj.name === iName) {
+				rTree = obj;
 			}
 		}
 		return rTree;
 	}
 
 	add(iPath: string) {
+		console.log(`iPath: ${iPath}`);
 		const lElem = iPath.split('/');
 		// eslint-disable-next-line
 		let pTree: ConceptTree = this;
 		for (const elem of lElem) {
-			//console.log(`dbg288: Tree name: ${pTree.name}`);
+			console.log(`dbg288: elem ${elem}  pTree.name: ${pTree.name}`);
+			console.log(pTree.sub.map((e) => e.name));
 			const p2Tree = pTree.find(elem);
 			if (p2Tree === null) {
+				console.log(`add elem ${elem}  p2Tree ${p2Tree} bool ${p2Tree === null}`);
 				const nTree = new ConceptTree(elem);
 				pTree.sub.push(nTree);
 				pTree = nTree;
