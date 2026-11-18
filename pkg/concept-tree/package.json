@@ -1,0 +1,82 @@
+{
+	"name": "concept-tree",
+	"description": "build and output virtual tree",
+	"version": "1.0.0",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/charlyoleg2/bopa_mono.git"
+	},
+	"homepage": "https://charlyoleg2.github.io/bopa_mono/",
+	"author": "charlyoleg2",
+	"license": "ISC",
+	"keywords": [
+		"virtual tree",
+		"tree structure",
+		"mermaid treeView diagram"
+	],
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist/",
+		"!dist/**/*.d.ts",
+		"!dist/**/*.map",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
+	],
+	"engines": {
+		"node": ">=24.0.0"
+	},
+	"tsdown": {
+		"entry": [
+			"src/index.ts"
+		],
+		"format": "esm",
+		"target": "esnext",
+		"fixedExtension": false,
+		"splitting": false,
+		"dts": false,
+		"sourcemap": false,
+		"clean": true
+	},
+	"prettier": {
+		"useTabs": true,
+		"singleQuote": true,
+		"trailingComma": "none",
+		"printWidth": 100,
+		"plugins": [],
+		"overrides": []
+	},
+	"scripts": {
+		"dev": "tsdown --watch",
+		"build": "tsdown",
+		"check": "tsc --noEmit",
+		"pretty": "prettier --check .",
+		"format": "prettier --write .",
+		"lint": "eslint .",
+		"test:unit": "vitest",
+		"test:unit:once": "vitest --run",
+		"ci": "run-s check build pretty lint test:unit:once",
+		"clean": "rimraf node_modules build dist tmp"
+	},
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@types/eslint__js": "^8.42.3",
+		"@types/node": "^26.6.6",
+		"eslint": "^10.15.0",
+		"eslint-config-prettier": "^10.1.8",
+		"npm-run-all2": "^9.0.4",
+		"prettier": "^3.10.1",
+		"rimraf": "^6.1.4",
+		"tsdown": "^0.23.7",
+		"tsx": "^4.23.15",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.73.0",
+		"vitest": "^5.1.1"
+	}
+}
