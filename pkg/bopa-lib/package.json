@@ -71,7 +71,6 @@
 		"@eslint/js": "^10.0.1",
 		"@types/eslint__js": "^8.42.3",
 		"@types/node": "^26.6.6",
-		"cpy-cli": "^7.0.0",
 		"eslint": "^10.15.0",
 		"eslint-config-prettier": "^10.1.8",
 		"npm-run-all2": "^9.0.4",
@@ -85,6 +84,7 @@
 	},
 	"dependencies": {
 		"@zip.js/zip.js": "^2.25.0",
+		"concept-tree": "^1.0.0",
 		"glob": "^14.0.6",
 		"zod": "^4.6.7"
 	}
