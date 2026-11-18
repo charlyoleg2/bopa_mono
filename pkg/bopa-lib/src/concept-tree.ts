@@ -26,38 +26,46 @@ class ConceptTree {
 		// eslint-disable-next-line
 		let pTree: ConceptTree = this;
 		for (const elem of lElem) {
-			//console.log(`dbg288: elem ${elem}  pTree.name: ${pTree.name}`);
-			//console.log(pTree.sub.map((e) => e.name));
 			const p2Tree = pTree.find(elem);
 			if (p2Tree === null) {
-				//console.log(`dbg333 add elem ${elem}  p2Tree ${p2Tree} bool ${p2Tree === null}`);
 				//console.log(`dbg333 add elem ${elem}  to pTree.name ${pTree.name}`);
 				const nTree = new ConceptTree(elem);
-				//console.log(pTree.sub.map((e) => e.name));
 				pTree.sub.push(nTree);
-				//console.log(pTree.sub.map((e) => e.name));
 				pTree = nTree;
-				//console.log(`dbg388 after add elem ${elem}  pTree.name ${pTree.name}`);
 			} else {
 				pTree = p2Tree;
 			}
 		}
 	}
 
-	genTxtDiag(iShift: number, idx: number): string {
+	genTxtDiag(iRoot: boolean, iLast: boolean, iPad: string, idx: number): string {
 		let rTxt = '';
 		//console.log(`dbg490: name: ${this.name}`);
 		//console.log(this.sub.map((e) => e.name));
-		rTxt += `${' '.repeat(iShift)}+--${(idx + 1).toString().padStart(3)}. ${this.name}\n`;
+		if (iRoot) {
+			if (this.name !== '') {
+				rTxt += `${iPad}${this.name}\n`;
+			}
+		} else {
+			rTxt += `${iPad}+--${(idx + 1).toString().padStart(3)}. ${this.name}\n`;
+		}
 		for (const [idx2, elem] of this.sub.entries()) {
-			//console.log(`dbg460: ${idx2} elem.name ${elem.name}`);
-			rTxt += elem.genTxtDiag(iShift + 4, idx2);
+			const last = idx2 === this.sub.length - 1 ? true : false;
+			let lePad = iPad;
+			if (!iRoot) {
+				if (iLast) {
+					lePad += ' '.repeat(8);
+				} else {
+					lePad += '|' + ' '.repeat(7);
+				}
+			}
+			rTxt += elem.genTxtDiag(false, last, lePad, idx2);
 		}
 		return rTxt;
 	}
 
 	txtDiag(): string {
-		const rTxt = this.genTxtDiag(0, 0);
+		const rTxt = this.genTxtDiag(true, true, '    ', 0);
 		return rTxt;
 	}
 }
