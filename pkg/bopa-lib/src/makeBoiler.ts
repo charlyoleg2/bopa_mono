@@ -2,7 +2,7 @@
 
 import type { tRecipe, tKeyVal } from './recipeZod.ts';
 import { tReplaceMode, genReplaceKV } from './recipeZod.ts';
-import { conceptTree } from './concept-tree.ts';
+import { conceptTree } from 'concept-tree';
 import { ZipFS } from '@zip.js/zip.js';
 
 interface tBoilerPlate {

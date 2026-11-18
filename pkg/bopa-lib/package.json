@@ -40,7 +40,7 @@
 		"target": "esnext",
 		"fixedExtension": false,
 		"splitting": false,
-		"dts": false,
+		"dts": true,
 		"sourcemap": false,
 		"clean": true
 	},
