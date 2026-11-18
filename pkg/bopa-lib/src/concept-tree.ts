@@ -21,7 +21,7 @@ class ConceptTree {
 	}
 
 	add(iPath: string) {
-		console.log(`dbg244 iPath: ${iPath}`);
+		//console.log(`dbg244 iPath: ${iPath}`);
 		const lElem = iPath.split('/');
 		// eslint-disable-next-line
 		let pTree: ConceptTree = this;
@@ -31,25 +31,33 @@ class ConceptTree {
 			const p2Tree = pTree.find(elem);
 			if (p2Tree === null) {
 				//console.log(`dbg333 add elem ${elem}  p2Tree ${p2Tree} bool ${p2Tree === null}`);
-				console.log(`dbg333 add elem ${elem}  to pTree.name ${pTree.name}`);
+				//console.log(`dbg333 add elem ${elem}  to pTree.name ${pTree.name}`);
 				const nTree = new ConceptTree(elem);
+				//console.log(pTree.sub.map((e) => e.name));
 				pTree.sub.push(nTree);
+				//console.log(pTree.sub.map((e) => e.name));
 				pTree = nTree;
+				//console.log(`dbg388 after add elem ${elem}  pTree.name ${pTree.name}`);
 			} else {
 				pTree = p2Tree;
 			}
 		}
 	}
 
-	txtDiag(iShift = 0) {
+	genTxtDiag(iShift: number, idx: number): string {
 		let rTxt = '';
-		for (const elem of this.sub) {
-			console.log(`dbg460: elem.name ${elem.name}`);
-			rTxt += `${' '.repeat(iShift)}+-- ${elem.name}\n`;
-			for (const elem2 of elem.sub) {
-				rTxt += elem2.txtDiag(iShift + 4);
-			}
+		//console.log(`dbg490: name: ${this.name}`);
+		//console.log(this.sub.map((e) => e.name));
+		rTxt += `${' '.repeat(iShift)}+--${(idx + 1).toString().padStart(3)}. ${this.name}\n`;
+		for (const [idx2, elem] of this.sub.entries()) {
+			//console.log(`dbg460: ${idx2} elem.name ${elem.name}`);
+			rTxt += elem.genTxtDiag(iShift + 4, idx2);
 		}
+		return rTxt;
+	}
+
+	txtDiag(): string {
+		const rTxt = this.genTxtDiag(0, 0);
 		return rTxt;
 	}
 }
