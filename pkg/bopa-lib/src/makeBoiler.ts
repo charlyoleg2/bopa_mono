@@ -9,6 +9,7 @@ interface tBoilerPlate {
 	topDir: string;
 	topDirCnt: number;
 	dirTree: string;
+	dirList: string[];
 	pathCnt: number;
 	lastMsg: string[];
 	lastMsgCnt: number;
@@ -86,7 +87,7 @@ function genLastMsg(iRecipe: tRecipe, iParamVal: tKeyVal): [string[], number] {
 	return [rLastMsg, rCnt];
 }
 
-function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): string {
+function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): [string, string[]] {
 	const dirTree = conceptTree(iTopDir);
 	for (const iLine of iFiles) {
 		if (/\//.test(iLine)) {
@@ -98,14 +99,18 @@ function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): string 
 	for (const iLine of iDirs) {
 		dirTree.add(iLine);
 	}
-	const rDirTree = dirTree.txtDiag();
-	return rDirTree;
+	dirTree.setPrefix(0);
+	dirTree.setIndex(true);
+	dirTree.setSorting(true);
+	const rDirTree = dirTree.txtDiagram();
+	const rDirList = dirTree.listTree();
+	return [rDirTree, rDirList];
 }
 
 async function makeBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): Promise<tBoilerPlate> {
 	const [topDir, topDirCnt] = genTopDirName(iRecipe, iParamVal);
 	const [lFile, lDir, pathCnt] = genPath(iRecipe, iParamVal);
-	const dirTree = genDirTree(topDir, lFile, lDir);
+	const [dirTree, dirList] = genDirTree(topDir, lFile, lDir);
 	const [lastMsg, lastMsgCnt] = genLastMsg(iRecipe, iParamVal);
 	const zipFs = new ZipFS();
 	zipFs.addText('hello.txt', 'Hello world!');
@@ -115,6 +120,7 @@ async function makeBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): Promise<tBoiler
 		topDir: topDir,
 		topDirCnt: topDirCnt,
 		dirTree: dirTree,
+		dirList: dirList,
 		pathCnt: pathCnt,
 		lastMsg: lastMsg,
 		lastMsgCnt: lastMsgCnt,
