@@ -1,6 +1,6 @@
 {
 	"name": "bopa_mono",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "The mono-repo for the boilerplate creator bopa",
 	"private": true,
 	"repository": {
