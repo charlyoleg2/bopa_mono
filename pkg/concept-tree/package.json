@@ -2,7 +2,7 @@
 	"name": "concept-tree",
 	"description": "build and output virtual tree",
 	"version": "1.0.0",
-	"private": true,
+	"private": false,
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/charlyoleg2/bopa_mono.git"
