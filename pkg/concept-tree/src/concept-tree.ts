@@ -105,8 +105,8 @@ class ConceptTree {
 			}
 		} else {
 			const pref = iLast ? this.getPrefix()[1] : this.getPrefix()[0];
-			const numb = this.numbering ? (idx + 1).toString().padStart(3) : '';
-			rList.push(`${iPad}${pref}${numb}. ${this.name}`);
+			const numb = this.numbering ? `${(idx + 1).toString().padStart(3)}.` : '';
+			rList.push(`${iPad}${pref}${numb} ${this.name}`);
 		}
 		const lName = this.listElem();
 		if (this.sorting) {
@@ -122,9 +122,9 @@ class ConceptTree {
 				let lePad = iPad;
 				if (!iRoot) {
 					if (iLast) {
-						lePad += ' '.repeat(8);
+						lePad += ' '.repeat(this.numbering ? 8 : 4);
 					} else {
-						lePad += this.getPrefix()[2] + ' '.repeat(7);
+						lePad += this.getPrefix()[2] + ' '.repeat(this.numbering ? 7 : 3);
 					}
 				}
 				rList.push(...eTree._genTxtDiag(false, last, lePad, idx2));
