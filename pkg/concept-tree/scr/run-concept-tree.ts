@@ -3,6 +3,8 @@
 import { conceptTree } from '../src/index.ts';
 
 const tree1 = conceptTree('aaa');
+tree1.addPath('xxx/zzz');
+tree1.addPath('xxx/yyy');
 tree1.addPath('bbb/ccc/ddd');
 tree1.addPath('bbb/eee/ddd');
 tree1.addPath('fff/ggg');
