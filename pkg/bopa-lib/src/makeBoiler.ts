@@ -91,18 +91,18 @@ function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): [string
 	const dirTree = conceptTree(iTopDir);
 	for (const iLine of iFiles) {
 		if (/\//.test(iLine)) {
-			//dirTree.add(path.Dirname(iLine));
+			//dirTree.addPath(path.Dirname(iLine));
 			const dirPath = iLine.replace(/\/[^/]*$/, '');
-			dirTree.add(dirPath);
+			dirTree.addPath(dirPath);
 		}
 	}
 	for (const iLine of iDirs) {
-		dirTree.add(iLine);
+		dirTree.addPath(iLine);
 	}
 	dirTree.setPrefix(0);
-	dirTree.setIndex(true);
+	dirTree.setNumbering(true);
 	dirTree.setSorting(true);
-	const rDirTree = dirTree.txtDiagram();
+	const rDirTree = dirTree.drawTree();
 	const rDirList = dirTree.listTree();
 	return [rDirTree, rDirList];
 }
