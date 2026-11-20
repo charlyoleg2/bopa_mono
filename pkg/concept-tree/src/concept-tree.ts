@@ -10,8 +10,8 @@ class ConceptTree {
 	name = '';
 	sub: ConceptTree[] = [];
 	// diagram style
-	prefix = cBDchar[0];
-	index = true;
+	prefixx = 0;
+	numbering = true;
 	sorting = true;
 
 	constructor(iName: string) {
@@ -20,13 +20,19 @@ class ConceptTree {
 		}
 	}
 
-	setPrefix(iId: number) {
-		const id = Math.max(0, Math.min(iId, cBDchar.length - 1));
-		this.prefix = cBDchar[id];
+	getPrefix(): string[] {
+		const rPrefixStr = cBDchar[this.prefixx];
+		return rPrefixStr;
 	}
 
-	setIndex(iIndex: boolean) {
-		this.index = iIndex;
+	// 0: SquareLine, 1: ASCII; 2: space
+	setPrefix(iId: number) {
+		const id = Math.max(0, Math.min(iId, cBDchar.length - 1));
+		this.prefixx = id;
+	}
+
+	setNumbering(iNumbering: boolean) {
+		this.numbering = iNumbering;
 	}
 
 	setSorting(iSorting: boolean) {
@@ -48,7 +54,30 @@ class ConceptTree {
 		return rTree;
 	}
 
-	add(iPath: string) {
+	addSubTree(iTree: ConceptTree): ConceptTree {
+		let pTree = this.findElem(iTree.name);
+		if (pTree === null) {
+			this.sub.push(iTree);
+			pTree = iTree;
+		} else {
+			console.log(`WARN058: the element ${iTree.name} already exist! Nothing added!`);
+		}
+		return pTree;
+	}
+
+	addElem(iName: string): ConceptTree {
+		let pTree = this.findElem(iName);
+		if (pTree === null) {
+			const nTree = new ConceptTree(iName);
+			this.sub.push(nTree);
+			pTree = nTree;
+		} else {
+			console.log(`WARN063: the element ${iName} already exist! Nothing added!`);
+		}
+		return pTree;
+	}
+
+	addPath(iPath: string) {
 		//console.log(`dbg244 iPath: ${iPath}`);
 		const lElem = iPath.split('/');
 		// eslint-disable-next-line
@@ -58,9 +87,7 @@ class ConceptTree {
 				const p2Tree = pTree.findElem(elem);
 				if (p2Tree === null) {
 					//console.log(`dbg333 add elem ${elem}  to pTree.name ${pTree.name}`);
-					const nTree = new ConceptTree(elem);
-					pTree.sub.push(nTree);
-					pTree = nTree;
+					pTree = pTree.addElem(elem);
 				} else {
 					pTree = p2Tree;
 				}
@@ -77,25 +104,38 @@ class ConceptTree {
 				rList.push(`${iPad}${this.name}`);
 			}
 		} else {
-			const pref = iLast ? this.prefix[1] : this.prefix[0];
-			rList.push(`${iPad}${pref}${(idx + 1).toString().padStart(3)}. ${this.name}`);
+			const pref = iLast ? this.getPrefix()[1] : this.getPrefix()[0];
+			const numb = this.numbering ? (idx + 1).toString().padStart(3) : '';
+			rList.push(`${iPad}${pref}${numb}. ${this.name}`);
 		}
-		for (const [idx2, elem] of this.sub.entries()) {
-			const last = idx2 === this.sub.length - 1 ? true : false;
-			let lePad = iPad;
-			if (!iRoot) {
-				if (iLast) {
-					lePad += ' '.repeat(8);
-				} else {
-					lePad += this.prefix[2] + ' '.repeat(7);
+		const lName = this.listElem();
+		if (this.sorting) {
+			lName.sort();
+		}
+		for (const [idx2, elem] of lName.entries()) {
+			const eTree = this.findElem(elem);
+			if (eTree !== null) {
+				eTree.setPrefix(this.prefixx);
+				eTree.setNumbering(this.numbering);
+				eTree.setSorting(this.sorting);
+				const last = idx2 === this.sub.length - 1 ? true : false;
+				let lePad = iPad;
+				if (!iRoot) {
+					if (iLast) {
+						lePad += ' '.repeat(8);
+					} else {
+						lePad += this.getPrefix()[2] + ' '.repeat(7);
+					}
 				}
+				rList.push(...eTree._genTxtDiag(false, last, lePad, idx2));
+			} else {
+				console.log('ERR127: this should never happen!');
 			}
-			rList.push(...elem._genTxtDiag(false, last, lePad, idx2));
 		}
 		return rList;
 	}
 
-	txtDiagram(): string {
+	drawTree(): string {
 		const rTxt = this._genTxtDiag(true, true, '    ', 0).join('\n');
 		return rTxt;
 	}
