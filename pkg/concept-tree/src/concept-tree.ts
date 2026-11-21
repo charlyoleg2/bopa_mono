@@ -66,6 +66,9 @@ class ConceptTree {
 	}
 
 	addElem(iName: string): ConceptTree {
+		if (/\//.test(iName)) {
+			console.log(`WARN070: the element ${iName} contains a slash (/)! Should not be added!`);
+		}
 		let pTree = this.findElem(iName);
 		if (pTree === null) {
 			const nTree = new ConceptTree(iName);
