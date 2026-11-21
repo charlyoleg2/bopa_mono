@@ -108,37 +108,30 @@ class ConceptTree {
 		}
 	}
 
-	_genTxtDiag(
-		iRoot: boolean,
-		iFirst: boolean,
-		iLast: boolean,
-		iPad: string,
-		idx: number
-	): string[] {
+	_genTxtDiag(iRoot: boolean, iLast: boolean, iPad: string, idx: number): string[] {
 		const rList = [];
 		//console.log(`dbg490: name: ${this.name}`);
 		//console.log(this.sub.map((e) => e.name));
-		let nextFirst = iFirst;
+		let nextFirst = false;
+		const numb = this.numbering ? `${(idx + 1).toString().padStart(3)}.` : '';
+		let rootPrefLen = 0;
 		if (iRoot) {
-			if (this.name !== '') {
-				rList.push(`${iPad}${this.name}`);
-				nextFirst = false;
-			} else {
+			if (this.name === '') {
 				nextFirst = true;
+			} else {
+				const rootPref = this.getPrefix()[3];
+				const rootPref2 = rootPref.length > 0 ? `${rootPref} ` : '';
+				if (this.numbering) {
+					rList.push(`${iPad}${rootPref}${numb} ${this.name}`);
+					rootPrefLen = rootPref.length + 5;
+				} else {
+					rList.push(`${iPad}${rootPref2}${this.name}`);
+					rootPrefLen = rootPref2.length;
+				}
 			}
 		} else {
 			const pref = iLast ? this.getPrefix()[1] : this.getPrefix()[0];
-			const numb = this.numbering ? `${(idx + 1).toString().padStart(3)}.` : '';
-			if (nextFirst) {
-				if (this.numbering) {
-					rList.push(`${iPad}${numb} ${this.name}`);
-				} else {
-					rList.push(`${iPad}${this.name}`);
-				}
-			} else {
-				rList.push(`${iPad}${pref}${numb} ${this.name}`);
-			}
-			nextFirst = false;
+			rList.push(`${iPad}${pref}${numb} ${this.name}`);
 		}
 		const lName = this.listElem();
 		if (this.sorting) {
@@ -152,14 +145,16 @@ class ConceptTree {
 				eTree.setSorting(this.sorting);
 				const last = idx2 === this.sub.length - 1 ? true : false;
 				let lePad = iPad;
-				if (!iRoot && !iFirst) {
+				if (iRoot) {
+					lePad += ' '.repeat(rootPrefLen);
+				} else {
 					if (iLast) {
 						lePad += ' '.repeat(this.numbering ? 8 : 4);
 					} else {
 						lePad += this.getPrefix()[2] + ' '.repeat(this.numbering ? 7 : 3);
 					}
 				}
-				rList.push(...eTree._genTxtDiag(false, nextFirst, last, lePad, idx2));
+				rList.push(...eTree._genTxtDiag(nextFirst, last, lePad, idx2));
 			} else {
 				console.log('ERR127: this should never happen!');
 			}
@@ -168,41 +163,35 @@ class ConceptTree {
 	}
 
 	drawTree(): string {
-		const rTxt = this._genTxtDiag(true, true, true, '    ', 0).join('\n');
+		const rTxt = this._genTxtDiag(true, true, '    ', 0).join('\n');
 		return rTxt;
 	}
 
-	_genPathList(iRoot: boolean, iFirst: boolean, iPad: string): string[] {
+	_genPathList(iRoot: boolean, iPad: string): string[] {
 		const rList = [];
 		//console.log(`dbg490: name: ${this.name}`);
 		//console.log(this.sub.map((e) => e.name));
-		let nextFirst = iFirst;
+		let nextFirst = false;
 		let lePad = iPad;
 		if (iRoot) {
-			if (this.name !== '') {
+			if (this.name === '') {
+				nextFirst = true;
+			} else {
 				lePad = `${iPad}${this.name}`;
 				rList.push(lePad);
-				nextFirst = false;
-			} else {
-				nextFirst = true;
 			}
 		} else {
-			if (nextFirst) {
-				lePad = `${iPad}${this.name}`;
-			} else {
-				lePad = `${iPad}/${this.name}`;
-			}
+			lePad = `${iPad}/${this.name}`;
 			rList.push(lePad);
-			nextFirst = false;
 		}
 		for (const elem of this.sub) {
-			rList.push(...elem._genPathList(false, nextFirst, lePad));
+			rList.push(...elem._genPathList(nextFirst, lePad));
 		}
 		return rList;
 	}
 
 	listTree(): string[] {
-		const rList = this._genPathList(true, true, '    ');
+		const rList = this._genPathList(true, '    ');
 		return rList;
 	}
 }
