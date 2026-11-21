@@ -2,8 +2,8 @@
 
 import { conceptTree } from '../src/index.ts';
 
-//const tree1 = conceptTree('aaa');
-const tree1 = conceptTree('');
+const tree1 = conceptTree('aaa');
+//const tree1 = conceptTree('');
 tree1.addPath('xxx/zzz');
 tree1.addPath('xxx/yyy');
 tree1.addPath('bbb/ccc/ddd');
@@ -24,6 +24,7 @@ tree1.addSubTree(tree2);
 
 // outputs
 tree1.setPrefix(0); // 0, 1, 2
+tree1.setRootPrefix(true);
 tree1.setNumbering(false);
 tree1.setSorting(true);
 

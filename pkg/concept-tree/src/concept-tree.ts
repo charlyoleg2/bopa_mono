@@ -11,6 +11,7 @@ class ConceptTree {
 	sub: ConceptTree[] = [];
 	// diagram style
 	prefixx = 0;
+	rootPrefix = true;
 	numbering = true;
 	sorting = true;
 
@@ -34,6 +35,10 @@ class ConceptTree {
 	setPrefix(iId: number) {
 		const id = Math.max(0, Math.min(iId, cBDchar.length - 1));
 		this.prefixx = id;
+	}
+
+	setRootPrefix(iRootPrefix: boolean) {
+		this.rootPrefix = iRootPrefix;
 	}
 
 	setNumbering(iNumbering: boolean) {
@@ -119,15 +124,17 @@ class ConceptTree {
 			if (this.name === '') {
 				nextFirst = true;
 			} else {
-				const rootPref = this.getPrefix()[3];
-				const rootPref2 = rootPref.length > 0 ? `${rootPref} ` : '';
-				if (this.numbering) {
-					rList.push(`${iPad}${rootPref}${numb} ${this.name}`);
-					rootPrefLen = rootPref.length + 5;
-				} else {
-					rList.push(`${iPad}${rootPref2}${this.name}`);
-					rootPrefLen = rootPref2.length;
+				let rootPref = '';
+				if (this.rootPrefix) {
+					const rootPref2 = this.getPrefix()[3];
+					if (this.numbering) {
+						rootPref = `${rootPref2}${numb} `;
+					} else {
+						rootPref = rootPref2.length > 0 ? `${rootPref2} ` : '';
+					}
 				}
+				rList.push(`${iPad}${rootPref}${this.name}`);
+				rootPrefLen = rootPref.length;
 			}
 		} else {
 			const pref = iLast ? this.getPrefix()[1] : this.getPrefix()[0];
