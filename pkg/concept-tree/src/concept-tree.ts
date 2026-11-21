@@ -31,20 +31,18 @@ class ConceptTree {
 		return rPrefixStr;
 	}
 
+	// output setting functions
 	// 0: SquareLine, 1: ASCII; 2: space
 	setPrefix(iId: number) {
 		const id = Math.max(0, Math.min(iId, cBDchar.length - 1));
 		this.prefixx = id;
 	}
-
 	setRootPrefix(iRootPrefix: boolean) {
 		this.rootPrefix = iRootPrefix;
 	}
-
 	setNumbering(iNumbering: boolean) {
 		this.numbering = iNumbering;
 	}
-
 	setSorting(iSorting: boolean) {
 		this.sorting = iSorting;
 	}
@@ -79,10 +77,14 @@ class ConceptTree {
 	}
 
 	addElem(iName: string): ConceptTree {
+		if (/\s/.test(iName)) {
+			throw new Error(`ERR082: the element '${iName}' contains a space!`);
+		}
 		if (/\//.test(iName)) {
-			throw new Error(
-				`ERR078: the element ${iName} contains a slash (/)! Should not be added!`
-			);
+			throw new Error(`ERR087: the element ${iName} contains a slash (/)!`);
+		}
+		if (iName === '') {
+			throw new Error('ERR092: the added element is empty');
 		}
 		let pTree = this.findElem(iName);
 		if (pTree === null) {
@@ -148,6 +150,7 @@ class ConceptTree {
 			const eTree = this.findElem(elem);
 			if (eTree !== null) {
 				eTree.setPrefix(this.prefixx);
+				eTree.setRootPrefix(this.rootPrefix);
 				eTree.setNumbering(this.numbering);
 				eTree.setSorting(this.sorting);
 				const last = idx2 === this.sub.length - 1 ? true : false;

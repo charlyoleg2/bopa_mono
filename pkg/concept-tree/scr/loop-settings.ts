@@ -47,12 +47,12 @@ for (const iRootName of ['', 'aaa']) {
 
 for (const [idx, iConf] of conf.entries()) {
 	console.log('\n\n\n=============================================');
-	console.log(`Test config	: ${idx + 1}`);
+	console.log(`Test confix    : ${idx + 1}`);
 	console.log(`1- rootName    : ${iConf.rootName}`);
 	console.log(`2- prefixIdx   : ${iConf.prefixIdx}`);
-	console.log(`3- rootPrefix	: ${iConf.rootPrefix}`);
+	console.log(`3- rootPrefix  : ${iConf.rootPrefix}`);
 	console.log(`4- numbering   : ${iConf.numbering}`);
-	console.log(`5- sorting		: ${iConf.sorting}`);
+	console.log(`5- sorting     : ${iConf.sorting}`);
 
 	const tree1 = conceptTree(iConf.rootName);
 	//const tree1 = conceptTree('aaa');

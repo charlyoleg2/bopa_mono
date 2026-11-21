@@ -22,7 +22,42 @@ console.log('check warnings due to invalid new element');
 tree1.addElem('kkk');
 tree1.addSubTree(tree2);
 
+console.log('check thrown errors');
+try {
+	tree1.addElem('');
+} catch (err) {
+	console.log('error-1');
+	console.log(err);
+}
+try {
+	tree1.addElem(' ');
+} catch (err) {
+	console.log('error-2');
+	console.log(err);
+}
+try {
+	tree1.addElem('a/');
+} catch (err) {
+	console.log('error-3');
+	console.log(err);
+}
+try {
+	const tree3 = conceptTree('');
+	tree1.addSubTree(tree3);
+} catch (err) {
+	console.log('error-4');
+	console.log(err);
+}
+try {
+	const tree4 = conceptTree('a/b');
+	tree4.listElem();
+} catch (err) {
+	console.log('error-5');
+	console.log(err);
+}
+
 // outputs
+console.log('outputs');
 tree1.setPrefix(0); // 0, 1, 2
 tree1.setRootPrefix(true);
 tree1.setNumbering(false);
