@@ -15,8 +15,12 @@ class ConceptTree {
 	sorting = true;
 
 	constructor(iName: string) {
-		if (!['', '.'].includes(iName)) {
-			this.name = iName;
+		if (/\//.test(iName)) {
+			console.log(`WARN019: ${iName} constains slash (/)! Empty string will be used`);
+		} else {
+			if (!['', '.'].includes(iName)) {
+				this.name = iName;
+			}
 		}
 	}
 
@@ -98,18 +102,37 @@ class ConceptTree {
 		}
 	}
 
-	_genTxtDiag(iRoot: boolean, iLast: boolean, iPad: string, idx: number): string[] {
+	_genTxtDiag(
+		iRoot: boolean,
+		iFirst: boolean,
+		iLast: boolean,
+		iPad: string,
+		idx: number
+	): string[] {
 		const rList = [];
 		//console.log(`dbg490: name: ${this.name}`);
 		//console.log(this.sub.map((e) => e.name));
+		let nextFirst = iFirst;
 		if (iRoot) {
 			if (this.name !== '') {
 				rList.push(`${iPad}${this.name}`);
+				nextFirst = false;
+			} else {
+				nextFirst = true;
 			}
 		} else {
 			const pref = iLast ? this.getPrefix()[1] : this.getPrefix()[0];
 			const numb = this.numbering ? `${(idx + 1).toString().padStart(3)}.` : '';
-			rList.push(`${iPad}${pref}${numb} ${this.name}`);
+			if (nextFirst) {
+				if (this.numbering) {
+					rList.push(`${iPad}${numb} ${this.name}`);
+				} else {
+					rList.push(`${iPad}${this.name}`);
+				}
+			} else {
+				rList.push(`${iPad}${pref}${numb} ${this.name}`);
+			}
+			nextFirst = false;
 		}
 		const lName = this.listElem();
 		if (this.sorting) {
@@ -123,14 +146,14 @@ class ConceptTree {
 				eTree.setSorting(this.sorting);
 				const last = idx2 === this.sub.length - 1 ? true : false;
 				let lePad = iPad;
-				if (!iRoot) {
+				if (!iRoot && !iFirst) {
 					if (iLast) {
 						lePad += ' '.repeat(this.numbering ? 8 : 4);
 					} else {
 						lePad += this.getPrefix()[2] + ' '.repeat(this.numbering ? 7 : 3);
 					}
 				}
-				rList.push(...eTree._genTxtDiag(false, last, lePad, idx2));
+				rList.push(...eTree._genTxtDiag(false, nextFirst, last, lePad, idx2));
 			} else {
 				console.log('ERR127: this should never happen!');
 			}
@@ -139,32 +162,41 @@ class ConceptTree {
 	}
 
 	drawTree(): string {
-		const rTxt = this._genTxtDiag(true, true, '    ', 0).join('\n');
+		const rTxt = this._genTxtDiag(true, true, true, '    ', 0).join('\n');
 		return rTxt;
 	}
 
-	_genPathList(iRoot: boolean, iPad: string): string[] {
+	_genPathList(iRoot: boolean, iFirst: boolean, iPad: string): string[] {
 		const rList = [];
 		//console.log(`dbg490: name: ${this.name}`);
 		//console.log(this.sub.map((e) => e.name));
+		let nextFirst = iFirst;
 		let lePad = iPad;
 		if (iRoot) {
 			if (this.name !== '') {
 				lePad = `${iPad}${this.name}`;
 				rList.push(lePad);
+				nextFirst = false;
+			} else {
+				nextFirst = true;
 			}
 		} else {
-			lePad = `${iPad}/${this.name}`;
+			if (nextFirst) {
+				lePad = `${iPad}${this.name}`;
+			} else {
+				lePad = `${iPad}/${this.name}`;
+			}
 			rList.push(lePad);
+			nextFirst = false;
 		}
 		for (const elem of this.sub) {
-			rList.push(...elem._genPathList(false, lePad));
+			rList.push(...elem._genPathList(false, nextFirst, lePad));
 		}
 		return rList;
 	}
 
 	listTree(): string[] {
-		const rList = this._genPathList(true, '    ');
+		const rList = this._genPathList(true, true, '    ');
 		return rList;
 	}
 }
