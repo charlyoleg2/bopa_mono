@@ -1,9 +1,9 @@
 // concept-tree.ts
 
 const cBDchar = [
-	['├──', '└──', '│'],
-	['+--', '+--', '|'],
-	['   ', '   ', ' ']
+	['├──', '└──', '│', '─'],
+	['+--', '+--', '|', '-'],
+	['   ', '   ', ' ', '']
 ];
 
 class ConceptTree {
@@ -15,11 +15,12 @@ class ConceptTree {
 	sorting = true;
 
 	constructor(iName: string) {
-		if (/\//.test(iName)) {
-			console.log(`WARN019: ${iName} constains slash (/)! Empty string will be used`);
+		const lName = iName.replace(/$\//, '').replace(/\/^/, '');
+		if (/\//.test(lName)) {
+			throw new Error(`ERR019: ${lName} constains slash (/)! Empty string will be used`);
 		} else {
-			if (!['', '.'].includes(iName)) {
-				this.name = iName;
+			if (!['', '.'].includes(lName)) {
+				this.name = lName;
 			}
 		}
 	}
@@ -59,6 +60,9 @@ class ConceptTree {
 	}
 
 	addSubTree(iTree: ConceptTree): ConceptTree {
+		if (iTree.name === '') {
+			throw new Error('ERR064: subTree without name can not be added!');
+		}
 		let pTree = this.findElem(iTree.name);
 		if (pTree === null) {
 			this.sub.push(iTree);
@@ -71,7 +75,9 @@ class ConceptTree {
 
 	addElem(iName: string): ConceptTree {
 		if (/\//.test(iName)) {
-			console.log(`WARN070: the element ${iName} contains a slash (/)! Should not be added!`);
+			throw new Error(
+				`ERR078: the element ${iName} contains a slash (/)! Should not be added!`
+			);
 		}
 		let pTree = this.findElem(iName);
 		if (pTree === null) {
