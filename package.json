@@ -50,7 +50,7 @@
 		"ls-pkg": "ls -la pkg"
 	},
 	"devDependencies": {
-		"npm-run-all2": "^9.0.4",
+		"npm-run-all2": "^9.1.0",
 		"rimraf": "^6.1.4"
 	},
 	"allowScripts": {
