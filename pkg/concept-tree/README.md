@@ -13,6 +13,13 @@ Alternative solutions:
 - https://mermaid.ai/open-source/syntax/treeView.html
 
 
+Links
+-----
+
+- [sources](https://github.com/charlyoleg2/bopa_mono/tree/main/pkg/concept-tree)
+- [pkg](https://www.npmjs.com/package/concept-tree)
+
+
 Getting started
 ---------------
 
@@ -37,6 +44,7 @@ const subTree = myTree.find('xxx')
 
 // configure the output
 myTree.setPrefix(0); // 0, 1, 2
+myTree.setRootPrefix(true);
 myTree.setNumbering(true);
 myTree.setSorting(true);
 
@@ -49,6 +57,15 @@ const lPath = myTree.listTree(); // string[]
 Combining with Mermaid.js
 -------------------------
 
+```mermaid
+treeView-beta
+├── src/
+│   ├── App.tsx  ## main component
+│   └── index.ts ## entry point
+├── .env ## environment variables
+├── Dockerfile
+└── package.json
+```
 
 
 Development
