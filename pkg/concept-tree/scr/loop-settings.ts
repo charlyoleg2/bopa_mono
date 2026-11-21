@@ -12,27 +12,41 @@ interface tConfig {
 
 const conf: tConfig[] = [];
 
+//for (const iRootName of ['', 'aaa']) {
+//	for (let iPrefix = 0; iPrefix < 3; iPrefix++) {
+//		for (const iRootPrefix of [true, false]) {
+//			for (const iNumbering of [true, false]) {
+//				for (const iSorting of [true, false]) {
+//					const iConf: tConfig = {
+//						rootName: iRootName,
+//						prefixIdx: iPrefix,
+//						rootPrefix: iRootPrefix,
+//						numbering: iNumbering,
+//						sorting: iSorting
+//					};
+//					conf.push(iConf);
+//				}
+//			}
+//		}
+//	}
+//}
 for (const iRootName of ['', 'aaa']) {
 	for (let iPrefix = 0; iPrefix < 3; iPrefix++) {
 		for (const iRootPrefix of [true, false]) {
-			for (const iNumbering of [true, false]) {
-				for (const iSorting of [true, false]) {
-					const iConf: tConfig = {
-						rootName: iRootName,
-						prefixIdx: iPrefix,
-						rootPrefix: iRootPrefix,
-						numbering: iNumbering,
-						sorting: iSorting
-					};
-					conf.push(iConf);
-				}
-			}
+			const iConf: tConfig = {
+				rootName: iRootName,
+				prefixIdx: iPrefix,
+				rootPrefix: iRootPrefix,
+				numbering: false,
+				sorting: true
+			};
+			conf.push(iConf);
 		}
 	}
 }
 
 for (const [idx, iConf] of conf.entries()) {
-	console.log('\n\n\\n=============================================');
+	console.log('\n\n\n=============================================');
 	console.log(`Test config : ${idx}`);
 	console.log(`1- rootName    : ${iConf.rootName}`);
 	console.log(`2- prefixIdx   : ${iConf.prefixIdx}`);
