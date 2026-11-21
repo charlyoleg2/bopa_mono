@@ -110,7 +110,8 @@ function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): [string
 async function makeBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): Promise<tBoilerPlate> {
 	const [topDir, topDirCnt] = genTopDirName(iRecipe, iParamVal);
 	const [lFile, lDir, pathCnt] = genPath(iRecipe, iParamVal);
-	const [dirTree, dirList] = genDirTree(topDir, lFile, lDir);
+	const topDir2 = iRecipe.topDir.createTopDir ? topDir : '';
+	const [dirTree, dirList] = genDirTree(topDir2, lFile, lDir);
 	const [lastMsg, lastMsgCnt] = genLastMsg(iRecipe, iParamVal);
 	const zipFs = new ZipFS();
 	zipFs.addText('hello.txt', 'Hello world!');
