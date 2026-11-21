@@ -100,7 +100,7 @@ function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): [string
 		dirTree.addPath(iLine);
 	}
 	dirTree.setPrefix(0);
-	dirTree.setNumbering(true);
+	dirTree.setNumbering(false);
 	dirTree.setSorting(true);
 	const rDirTree = dirTree.drawTree();
 	const rDirList = dirTree.listTree();
