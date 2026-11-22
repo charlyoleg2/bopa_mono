@@ -1,7 +1,7 @@
 {
 	"name": "bopa-lib",
 	"description": "bopa-recipes and ts-lib to use those recipes",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"private": true,
 	"repository": {
 		"type": "git",
