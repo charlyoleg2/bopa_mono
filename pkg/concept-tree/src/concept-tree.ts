@@ -201,7 +201,7 @@ class ConceptTree {
 	}
 
 	listTree(): string[] {
-		const rList = this._genPathList(true, '    ');
+		const rList = this._genPathList(true, '');
 		return rList;
 	}
 }

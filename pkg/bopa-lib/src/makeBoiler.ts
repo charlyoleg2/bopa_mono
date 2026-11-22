@@ -169,8 +169,8 @@ async function zipBoiler(
 		};
 		rFileList.push(rRF);
 	}
-	zipFs.addText('hello.txt', 'Hello world!');
-	zipFs.addText('folder/hello.txt', 'Hello world from a directory!');
+	//zipFs.addText('hello.txt', 'Hello world!');
+	//zipFs.addText('folder/hello.txt', 'Hello world from a directory!');
 	const zipFileBlob = await zipFs.exportBlob();
 	const rZipBoiler: tZipBoiler = {
 		fileList: rFileList,
