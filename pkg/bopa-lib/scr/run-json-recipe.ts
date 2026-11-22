@@ -1,6 +1,6 @@
 // run-json-recipes.ts
 
-import { readRecipe, makeBoiler, genParamVal } from '../src/index.ts';
+import { readRecipe, genParamVal, preBoiler, zipBoiler } from '../src/index.ts';
 import { glob } from 'glob';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -18,21 +18,29 @@ async function runOne(idx: number, iPath: string) {
 	const res = readRecipe(fName, fText);
 	if (res.ok) {
 		//console.log(res.msg);
-		const boiler = await makeBoiler(res.recipe, genParamVal(res.recipe));
-		const fZipName = `${dirOut}/${boiler.topDir}.zip`;
+		const boilerPre = preBoiler(res.recipe, genParamVal(res.recipe));
+		const boilerZip = await zipBoiler(boilerPre.dirList, boilerPre.fileList, false);
+		const fZipName = `${dirOut}/${boilerPre.topDir}.zip`;
 		// write binary file
-		const fArrayBuffer = await boiler.zipBlob.arrayBuffer();
+		const fArrayBuffer = await boilerZip.zipBlob.arrayBuffer();
 		const fBuffer = Buffer.from(fArrayBuffer);
 		await fs.writeFile(fZipName, fBuffer);
 		// log
-		console.log(`${idx}- Write file ${fZipName}`);
-		console.log(`  topDir: ${boiler.topDir} [replace-cnt: ${boiler.topDirCnt}]`);
-		console.log(`  directory-tree:  [replace-cnt: ${boiler.pathCnt}]`);
-		console.log(boiler.dirTree);
-		console.log(`  directory-list:  [replace-cnt: ${boiler.pathCnt}]`);
-		console.log(boiler.dirList.join('\n'));
-		console.log(`  lastMessages:  [replace-cnt: ${boiler.lastMsgCnt}]`);
-		for (const iLine of boiler.lastMsg) {
+		console.log(`\n\n${idx}- Write file ${fZipName}`);
+		console.log(`  topDir: ${boilerPre.topDir} [replace-cnt: ${boilerPre.topDirCnt}]`);
+		console.log(`  directory-tree:  [replace-cnt: ${boilerPre.pathCnt}]`);
+		console.log(boilerPre.dirTree);
+		console.log(`  directory-list:  [replace-cnt: ${boilerPre.pathCnt}]`);
+		console.log(boilerPre.dirList.join('\n'));
+		console.log('  file-list:');
+		for (const [idx2, iRF] of boilerPre.fileList.entries()) {
+			const txt = `${idx2 + 1}/${boilerPre.fileList.length} : ${iRF.dest}
+    orig: ${iRF.orig}
+    size: ${iRF.size}   replaceCnt: ${iRF.replaceCnt}`;
+			console.log(txt);
+		}
+		console.log(`  lastMessages:  [replace-cnt: ${boilerPre.lastMsgCnt}]`);
+		for (const iLine of boilerPre.lastMsg) {
 			console.log(`    ${iLine}`);
 		}
 	} else {

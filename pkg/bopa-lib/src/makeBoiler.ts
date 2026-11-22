@@ -5,14 +5,26 @@ import { tReplaceMode, genReplaceKV } from './recipeZod.ts';
 import { conceptTree } from 'concept-tree';
 import { ZipFS } from '@zip.js/zip.js';
 
-interface tBoilerPlate {
+interface tRemoteFile {
+	orig: string;
+	dest: string;
+	size: number;
+	replaceCnt: number;
+}
+
+interface tPreBoiler {
 	topDir: string;
 	topDirCnt: number;
 	dirTree: string;
 	dirList: string[];
 	pathCnt: number;
+	fileList: tRemoteFile[];
 	lastMsg: string[];
 	lastMsgCnt: number;
+}
+
+interface tZipBoiler {
+	fileList: tRemoteFile[];
 	zipBlob: Blob;
 }
 
@@ -30,25 +42,31 @@ function genTopDirName(iRecipe: tRecipe, iParamVal: tKeyVal): [string, number] {
 	return [rTopDirName, rCnt];
 }
 
-function genPath(iRecipe: tRecipe, iParamVal: tKeyVal): [string[], string[], number] {
-	const rFiles: string[] = [];
+function genPath(iRecipe: tRecipe, iParamVal: tKeyVal): [tRemoteFile[], string[], number] {
+	const rFiles: tRemoteFile[] = [];
 	const rDirs: string[] = [];
 	const replaceKV = genReplaceKV(iRecipe, iParamVal, tReplaceMode.eFilePath);
 	//console.log(replaceKV);
 	let rCnt = 0;
 	// iRecipe.files.path
-	for (const iFile of iRecipe.files) {
-		for (const iPath of iFile.path) {
-			let line = iPath;
+	for (const iUrl of iRecipe.files) {
+		for (const iPath of iUrl.path) {
+			let dest = iPath;
 			for (const kk in replaceKV) {
 				const vv = replaceKV[kk];
 				const kkRegex = new RegExp(kk, 'g');
-				//console.log(`dbg039: ${line}`);
-				rCnt += line.matchAll(kkRegex).reduce((cc) => cc + 1, 0);
-				line = line.replaceAll(kkRegex, vv);
+				//console.log(`dbg039: ${dest}`);
+				rCnt += dest.matchAll(kkRegex).reduce((cc) => cc + 1, 0);
+				dest = dest.replaceAll(kkRegex, vv);
 				//console.log(`dbg029: kk ${kk}, rCnt ${rCnt}`);
 			}
-			rFiles.push(line);
+			const rRF: tRemoteFile = {
+				orig: `${iUrl.url}/${iPath}`,
+				dest: dest,
+				size: 0,
+				replaceCnt: 0
+			};
+			rFiles.push(rRF);
 		}
 	}
 	// iRecipe.mkdir
@@ -87,12 +105,12 @@ function genLastMsg(iRecipe: tRecipe, iParamVal: tKeyVal): [string[], number] {
 	return [rLastMsg, rCnt];
 }
 
-function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): [string, string[]] {
+function genDirTree(iTopDir: string, iFiles: tRemoteFile[], iDirs: string[]): [string, string[]] {
 	const dirTree = conceptTree(iTopDir);
 	for (const iLine of iFiles) {
-		if (/\//.test(iLine)) {
-			//dirTree.addPath(path.Dirname(iLine));
-			const dirPath = iLine.replace(/\/[^/]*$/, '');
+		if (/\//.test(iLine.dest)) {
+			//dirTree.addPath(path.Dirname(iLine.dest));
+			const dirPath = iLine.dest.replace(/\/[^/]*$/, '');
 			dirTree.addPath(dirPath);
 		}
 	}
@@ -107,28 +125,59 @@ function genDirTree(iTopDir: string, iFiles: string[], iDirs: string[]): [string
 	return [rDirTree, rDirList];
 }
 
-async function makeBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): Promise<tBoilerPlate> {
+function preBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): tPreBoiler {
 	const [topDir, topDirCnt] = genTopDirName(iRecipe, iParamVal);
 	const [lFile, lDir, pathCnt] = genPath(iRecipe, iParamVal);
 	const topDir2 = iRecipe.topDir.createTopDir ? topDir : '';
 	const [dirTree, dirList] = genDirTree(topDir2, lFile, lDir);
 	const [lastMsg, lastMsgCnt] = genLastMsg(iRecipe, iParamVal);
-	const zipFs = new ZipFS();
-	zipFs.addText('hello.txt', 'Hello world!');
-	zipFs.addText('folder/hello.txt', 'Hello world from a directory!');
-	const zipFileBlob = await zipFs.exportBlob();
-	const rBoilerPlate: tBoilerPlate = {
+	const rBoilerPlate: tPreBoiler = {
 		topDir: topDir,
 		topDirCnt: topDirCnt,
 		dirTree: dirTree,
 		dirList: dirList,
 		pathCnt: pathCnt,
+		fileList: lFile,
 		lastMsg: lastMsg,
-		lastMsgCnt: lastMsgCnt,
-		zipBlob: zipFileBlob
+		lastMsgCnt: lastMsgCnt
 	};
 	return rBoilerPlate;
 }
 
-export type { tBoilerPlate };
-export { makeBoiler };
+async function zipBoiler(
+	iDirList: string[],
+	iFileList: tRemoteFile[],
+	verbose: boolean
+): Promise<tZipBoiler> {
+	const rFileList: tRemoteFile[] = [];
+	const zipFs = new ZipFS();
+	for (const [idx, iDir] of iDirList.entries()) {
+		if (verbose) {
+			console.log(`[${idx + 1}/${iDirList.length}] add directory ${iDir}`);
+		}
+		zipFs.addDirectory(iDir);
+	}
+	for (const [idx, iRF] of iFileList.entries()) {
+		if (verbose) {
+			console.log(`[${idx + 1}/${iFileList.length}] add file ${iRF.dest}`);
+		}
+		const rRF: tRemoteFile = {
+			orig: iRF.orig,
+			dest: iRF.dest,
+			size: 3,
+			replaceCnt: 5
+		};
+		rFileList.push(rRF);
+	}
+	zipFs.addText('hello.txt', 'Hello world!');
+	zipFs.addText('folder/hello.txt', 'Hello world from a directory!');
+	const zipFileBlob = await zipFs.exportBlob();
+	const rZipBoiler: tZipBoiler = {
+		fileList: rFileList,
+		zipBlob: zipFileBlob
+	};
+	return rZipBoiler;
+}
+
+export type { tPreBoiler, tZipBoiler };
+export { preBoiler, zipBoiler };
