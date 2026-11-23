@@ -145,7 +145,7 @@ function preBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): tPreBoiler {
 }
 
 async function msleep(iMs: number) {
-	await new Promise((resolve) => setTimeout(resolve, iMs));
+	return new Promise((resolve) => setTimeout(resolve, iMs));
 }
 
 async function ffetch(iUrl: string): Promise<[string, number, number]> {
