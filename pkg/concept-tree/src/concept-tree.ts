@@ -172,8 +172,8 @@ class ConceptTree {
 		return rList;
 	}
 
-	drawTree(): string {
-		const rTxt = this._genTxtDiag(true, true, '    ', 0).join('\n');
+	drawTree(iPrefix = ''): string {
+		const rTxt = this._genTxtDiag(true, true, iPrefix, 0).join('\n');
 		return rTxt;
 	}
 
@@ -200,8 +200,8 @@ class ConceptTree {
 		return rList;
 	}
 
-	listTree(): string[] {
-		const rList = this._genPathList(true, '');
+	listTree(iPrefix = ''): string[] {
+		const rList = this._genPathList(true, iPrefix);
 		return rList;
 	}
 }
