@@ -118,6 +118,7 @@ function genDirTree(iTopDir: string, iFiles: tRemoteFile[], iDirs: string[]): [s
 		dirTree.addPath(iLine);
 	}
 	dirTree.setPrefix(0);
+	dirTree.setRootPrefix(false);
 	dirTree.setNumbering(false);
 	dirTree.setSorting(true);
 	const rDirTree = dirTree.drawTree();
@@ -125,11 +126,26 @@ function genDirTree(iTopDir: string, iFiles: tRemoteFile[], iDirs: string[]): [s
 	return [rDirTree, rDirList];
 }
 
+function genFileList(iTopDir: string, iFileList: tRemoteFile[]): tRemoteFile[] {
+	const rFileList: tRemoteFile[] = [];
+	for (const iRF of iFileList) {
+		const rRF: tRemoteFile = {
+			orig: iRF.orig,
+			dest: `${iTopDir}/${iRF.dest}`,
+			size: iRF.size,
+			replaceCnt: iRF.replaceCnt
+		};
+		rFileList.push(rRF);
+	}
+	return rFileList;
+}
+
 function preBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): tPreBoiler {
 	const [topDir, topDirCnt] = genTopDirName(iRecipe, iParamVal);
 	const [lFile, lDir, pathCnt] = genPath(iRecipe, iParamVal);
 	const topDir2 = iRecipe.topDir.createTopDir ? topDir : '';
 	const [dirTree, dirList] = genDirTree(topDir2, lFile, lDir);
+	const lFile2 = genFileList(topDir2, lFile);
 	const [lastMsg, lastMsgCnt] = genLastMsg(iRecipe, iParamVal);
 	const rBoilerPlate: tPreBoiler = {
 		topDir: topDir,
@@ -137,7 +153,7 @@ function preBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): tPreBoiler {
 		dirTree: dirTree,
 		dirList: dirList,
 		pathCnt: pathCnt,
-		fileList: lFile,
+		fileList: lFile2,
 		lastMsg: lastMsg,
 		lastMsgCnt: lastMsgCnt
 	};
