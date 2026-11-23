@@ -19,6 +19,7 @@ interface tPreBoiler {
 	dirList: string[];
 	pathCnt: number;
 	fileList: tRemoteFile[];
+	fileReplaceKV: tKeyVal;
 	lastMsg: string[];
 	lastMsgCnt: number;
 }
@@ -146,6 +147,7 @@ function preBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): tPreBoiler {
 	const topDir2 = iRecipe.topDir.createTopDir ? topDir : '';
 	const [dirTree, dirList] = genDirTree(topDir2, lFile, lDir);
 	const lFile2 = genFileList(topDir2, lFile);
+	const fContentReplaceKV = genReplaceKV(iRecipe, iParamVal, tReplaceMode.eFContent);
 	const [lastMsg, lastMsgCnt] = genLastMsg(iRecipe, iParamVal);
 	const rBoilerPlate: tPreBoiler = {
 		topDir: topDir,
@@ -154,6 +156,7 @@ function preBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): tPreBoiler {
 		dirList: dirList,
 		pathCnt: pathCnt,
 		fileList: lFile2,
+		fileReplaceKV: fContentReplaceKV,
 		lastMsg: lastMsg,
 		lastMsgCnt: lastMsgCnt
 	};
@@ -164,35 +167,50 @@ async function msleep(iMs: number) {
 	return new Promise((resolve) => setTimeout(resolve, iMs));
 }
 
-async function ffetch(iUrl: string): Promise<[string, number, number]> {
-	console.log(`dbg152: ffetch ${iUrl}`);
-	const rTxt = 'aaa\nbbb\n';
+async function ffetch(iReplaceKV: tKeyVal, iUrl: string): Promise<[string, number, number]> {
+	//console.log(`dbg152: ffetch ${iUrl}`);
+	let rTxt = '';
+	try {
+		const resp = await fetch(iUrl);
+		if (resp.ok) {
+			rTxt = await resp.text();
+		} else {
+			console.error(`ERR175: error while fetching ${iUrl}`);
+		}
+	} catch (err) {
+		console.error(`ERR178: error while fetching ${iUrl}`);
+		if (err instanceof Error) {
+			console.error(err.message);
+		}
+	}
+	let rCnt = 0;
+	for (const kk in iReplaceKV) {
+		const vv = iReplaceKV[kk];
+		const kkRegex = new RegExp(kk, 'g');
+		rCnt += rTxt.matchAll(kkRegex).reduce((cc) => cc + 1, 0);
+		rTxt = rTxt.replaceAll(kkRegex, vv);
+	}
 	const rSize = rTxt.length;
-	const rCnt = 5;
-	await msleep(1);
+	//await msleep(1);
 	return [rTxt, rSize, rCnt];
 }
 
-async function zipBoiler(
-	iDirList: string[],
-	iFileList: tRemoteFile[],
-	verbose: boolean
-): Promise<tZipBoiler> {
+async function zipBoiler(iPreBoiler: tPreBoiler, verbose: boolean): Promise<tZipBoiler> {
 	const rFileList: tRemoteFile[] = [];
 	const zipFs = new ZipFS();
 	//zipFs.addText('hello.txt', 'Hello world!');
 	//zipFs.addText('folder/hello.txt', 'Hello world from a directory!');
-	for (const [idx, iDir] of iDirList.entries()) {
+	for (const [idx, iDir] of iPreBoiler.dirList.entries()) {
 		if (verbose) {
-			console.log(`[${idx + 1}/${iDirList.length}] add directory ${iDir}`);
+			console.log(`[${idx + 1}/${iPreBoiler.dirList.length}] add directory ${iDir}`);
 		}
 		zipFs.addDirectory(iDir);
 	}
-	for (const [idx, iRF] of iFileList.entries()) {
+	for (const [idx, iRF] of iPreBoiler.fileList.entries()) {
 		if (verbose) {
-			console.log(`[${idx + 1}/${iFileList.length}] add file ${iRF.dest}`);
+			console.log(`[${idx + 1}/${iPreBoiler.fileList.length}] add file ${iRF.dest}`);
 		}
-		const [ftxt, fsize, fcnt] = await ffetch(iRF.orig);
+		const [ftxt, fsize, fcnt] = await ffetch(iPreBoiler.fileReplaceKV, iRF.orig);
 		zipFs.addText(iRF.dest, ftxt);
 		const rRF: tRemoteFile = {
 			orig: iRF.orig,
@@ -211,4 +229,4 @@ async function zipBoiler(
 }
 
 export type { tPreBoiler, tZipBoiler };
-export { preBoiler, zipBoiler };
+export { preBoiler, zipBoiler, msleep };

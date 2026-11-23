@@ -32,7 +32,7 @@ async function runOne(idx: number, iPath: string) {
 			console.log(`    ${iLine}`);
 		}
 		// zip
-		const boilerZip = await zipBoiler(boilerPre.dirList, boilerPre.fileList, true);
+		const boilerZip = await zipBoiler(boilerPre, true);
 		// write binary file
 		const fArrayBuffer = await boilerZip.zipBlob.arrayBuffer();
 		const fBuffer = Buffer.from(fArrayBuffer);
