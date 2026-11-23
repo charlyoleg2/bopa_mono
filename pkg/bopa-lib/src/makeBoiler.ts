@@ -61,7 +61,7 @@ function genPath(iRecipe: tRecipe, iParamVal: tKeyVal): [tRemoteFile[], string[]
 				//console.log(`dbg029: kk ${kk}, rCnt ${rCnt}`);
 			}
 			const rRF: tRemoteFile = {
-				orig: `${iUrl.url}/${iPath}`,
+				orig: `${iUrl.url.replace(/\/$/, '')}/${iPath}`,
 				dest: dest,
 				size: 0,
 				replaceCnt: 0
@@ -144,6 +144,19 @@ function preBoiler(iRecipe: tRecipe, iParamVal: tKeyVal): tPreBoiler {
 	return rBoilerPlate;
 }
 
+async function msleep(iMs: number) {
+	await new Promise((resolve) => setTimeout(resolve, iMs));
+}
+
+async function ffetch(iUrl: string): Promise<[string, number, number]> {
+	console.log(`dbg152: ffetch ${iUrl}`);
+	const rTxt = 'aaa\nbbb\n';
+	const rSize = rTxt.length;
+	const rCnt = 5;
+	await msleep(1);
+	return [rTxt, rSize, rCnt];
+}
+
 async function zipBoiler(
 	iDirList: string[],
 	iFileList: tRemoteFile[],
@@ -151,6 +164,8 @@ async function zipBoiler(
 ): Promise<tZipBoiler> {
 	const rFileList: tRemoteFile[] = [];
 	const zipFs = new ZipFS();
+	//zipFs.addText('hello.txt', 'Hello world!');
+	//zipFs.addText('folder/hello.txt', 'Hello world from a directory!');
 	for (const [idx, iDir] of iDirList.entries()) {
 		if (verbose) {
 			console.log(`[${idx + 1}/${iDirList.length}] add directory ${iDir}`);
@@ -161,16 +176,16 @@ async function zipBoiler(
 		if (verbose) {
 			console.log(`[${idx + 1}/${iFileList.length}] add file ${iRF.dest}`);
 		}
+		const [ftxt, fsize, fcnt] = await ffetch(iRF.orig);
+		zipFs.addText(iRF.dest, ftxt);
 		const rRF: tRemoteFile = {
 			orig: iRF.orig,
 			dest: iRF.dest,
-			size: 3,
-			replaceCnt: 5
+			size: fsize,
+			replaceCnt: fcnt
 		};
 		rFileList.push(rRF);
 	}
-	//zipFs.addText('hello.txt', 'Hello world!');
-	//zipFs.addText('folder/hello.txt', 'Hello world from a directory!');
 	const zipFileBlob = await zipFs.exportBlob();
 	const rZipBoiler: tZipBoiler = {
 		fileList: rFileList,

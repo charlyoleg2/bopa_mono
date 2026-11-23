@@ -19,12 +19,7 @@ async function runOne(idx: number, iPath: string) {
 	if (res.ok) {
 		//console.log(res.msg);
 		const boilerPre = preBoiler(res.recipe, genParamVal(res.recipe));
-		const boilerZip = await zipBoiler(boilerPre.dirList, boilerPre.fileList, false);
 		const fZipName = `${dirOut}/${boilerPre.topDir}.zip`;
-		// write binary file
-		const fArrayBuffer = await boilerZip.zipBlob.arrayBuffer();
-		const fBuffer = Buffer.from(fArrayBuffer);
-		await fs.writeFile(fZipName, fBuffer);
 		// log
 		console.log(`\n\n${idx}- Write file ${fZipName}`);
 		console.log(`  topDir: ${boilerPre.topDir} [replace-cnt: ${boilerPre.topDirCnt}]`);
@@ -32,16 +27,23 @@ async function runOne(idx: number, iPath: string) {
 		console.log(boilerPre.dirTree);
 		console.log(`  directory-list:  [replace-cnt: ${boilerPre.pathCnt}]`);
 		console.log(boilerPre.dirList.join('\n'));
-		console.log('  file-list:');
-		for (const [idx2, iRF] of boilerPre.fileList.entries()) {
-			const txt = `${idx2 + 1}/${boilerPre.fileList.length} : ${iRF.dest}
-    orig: ${iRF.orig}
-    size: ${iRF.size}   replaceCnt: ${iRF.replaceCnt}`;
-			console.log(txt);
-		}
 		console.log(`  lastMessages:  [replace-cnt: ${boilerPre.lastMsgCnt}]`);
 		for (const iLine of boilerPre.lastMsg) {
 			console.log(`    ${iLine}`);
+		}
+		// zip
+		const boilerZip = await zipBoiler(boilerPre.dirList, boilerPre.fileList, true);
+		// write binary file
+		const fArrayBuffer = await boilerZip.zipBlob.arrayBuffer();
+		const fBuffer = Buffer.from(fArrayBuffer);
+		await fs.writeFile(fZipName, fBuffer);
+		// log2
+		console.log('  file-list:');
+		for (const [idx2, iRF] of boilerZip.fileList.entries()) {
+			const txt = `${idx2 + 1}/${boilerZip.fileList.length} : ${iRF.dest}
+    orig: ${iRF.orig}
+    size: ${iRF.size}   replaceCnt: ${iRF.replaceCnt}`;
+			console.log(txt);
 		}
 	} else {
 		console.error(res.msg);

@@ -69,7 +69,6 @@
 				"pkg/desiBlabla-ui/src/lib/makeList.ts",
 				"pkg/desiBlabla-ui/src/routes/+layout.ts",
 				"pkg/desiBlabla-ui/src/routes/+layout.svelte",
-				"pkg/desiBlabla-ui/src/routes/[...design]",
 				"pkg/desiBlabla-ui/src/routes/[...design]/+page.ts",
 				"pkg/desiBlabla-ui/src/routes/[...design]/+page.svelte",
 				"pkg/desiBlabla-ui/src/routes/+page.svelte",
