@@ -167,7 +167,9 @@ async function msleep(iMs: number) {
 	return new Promise((resolve) => setTimeout(resolve, iMs));
 }
 
-async function ffetch(iReplaceKV: tKeyVal, iUrl: string): Promise<[string, number, number]> {
+type tFfetch = [string, number, number];
+
+async function ffetch(iReplaceKV: tKeyVal, iUrl: string): Promise<tFfetch> {
 	//console.log(`dbg152: ffetch ${iUrl}`);
 	let rTxt = '';
 	try {
@@ -206,11 +208,15 @@ async function zipBoiler(iPreBoiler: tPreBoiler, verbose: boolean): Promise<tZip
 		}
 		zipFs.addDirectory(iDir);
 	}
+	const resFetch: tFfetch[] = await Promise.all(
+		iPreBoiler.fileList.map((iRF) => ffetch(iPreBoiler.fileReplaceKV, iRF.orig))
+	);
 	for (const [idx, iRF] of iPreBoiler.fileList.entries()) {
 		if (verbose) {
 			console.log(`[${idx + 1}/${iPreBoiler.fileList.length}] add file ${iRF.dest}`);
 		}
-		const [ftxt, fsize, fcnt] = await ffetch(iPreBoiler.fileReplaceKV, iRF.orig);
+		//const [ftxt, fsize, fcnt] = await ffetch(iPreBoiler.fileReplaceKV, iRF.orig);
+		const [ftxt, fsize, fcnt] = resFetch[idx];
 		zipFs.addText(iRF.dest, ftxt);
 		const rRF: tRemoteFile = {
 			orig: iRF.orig,
