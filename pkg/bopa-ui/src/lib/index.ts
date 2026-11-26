@@ -1,5 +1,5 @@
 // place files you want to import through the `#lib` alias in this folder.
 
-import ChooseRecipe from './ChooseRecipe.svelte';
+import BopaUI from './BopaUI.svelte';
 
-export { ChooseRecipe };
+export { BopaUI };

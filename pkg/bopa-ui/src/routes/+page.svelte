@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { ChooseRecipe } from '#lib/index.js';
+	import { BopaUI } from '#lib/index.js';
+	const beNode = true;
 </script>
 
-<h1>Welcome to BoPa-UI</h1>
-<p>lala</p>
-<ChooseRecipe />
+<BopaUI backendNode={beNode} />
