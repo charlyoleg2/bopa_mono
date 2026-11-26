@@ -2,6 +2,9 @@ import { defineConfig } from 'vitest/config';
 import adapter from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
 
+const basePath = process.env.BASE_PATH;
+const dev = process.argv.includes('dev') || basePath === undefined;
+
 export default defineConfig({
 	plugins: [
 		sveltekit({
@@ -12,7 +15,7 @@ export default defineConfig({
 			},
 			adapter: adapter(),
 			paths: {
-				base: process.env.NODE_ENV === 'production' ? '/bopa_mono' : ''
+				base: dev ? '' : `/${basePath}`
 			}
 		})
 	],
