@@ -13,6 +13,16 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
+			prerender: {
+				handleHttpError: ({ path, referrer, message }) => {
+					// ignore deliberate link to shiny 404 page
+					if (path === '/backend' && referrer === '/') {
+						return;
+					}
+					// otherwise fail the build
+					throw new Error(message);
+				}
+			},
 			adapter: adapter(),
 			paths: {
 				base: dev ? '' : `/${basePath}`
