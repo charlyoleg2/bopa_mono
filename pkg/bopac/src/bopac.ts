@@ -45,6 +45,11 @@ async function mini_server(aDirectory: string, aBrowser: boolean, aPort: number)
 	// the main
 	const app = new Hono();
 
+	// end-points
+	app.get('/backend', (ctx) => {
+		return ctx.json({ backend: 'NodeJS' });
+	});
+
 	// static content
 	if (aDirectory !== '') {
 		app.use('*', serveStatic({ root: aDirectory }));
