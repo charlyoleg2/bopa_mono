@@ -11,6 +11,6 @@ export const load: PageLoad = async ({ fetch }) => {
 		console.log('ERR018: fetch /backend failed!');
 		console.log(err);
 	}
-	console.log(rJson);
+	//console.log(rJson);
 	return rJson;
 };
